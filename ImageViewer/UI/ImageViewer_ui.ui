@@ -6,35 +6,61 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>600</height>
+    <width>1207</width>
+    <height>672</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QGroupBox" name="gb_ImagePicker">
+     <widget class="QFrame" name="fr_ImagePicker">
       <property name="maximumSize">
        <size>
-        <width>260</width>
+        <width>280</width>
         <height>16777215</height>
        </size>
       </property>
-      <property name="acceptDrops">
-       <bool>true</bool>
+      <property name="frameShape">
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
-      <property name="title">
-       <string/>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Plain</enum>
       </property>
+      <property name="lineWidth">
+       <number>5</number>
+      </property>
+      <layout class="QVBoxLayout" name="layout_Image">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+      </layout>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="lb_ImageDisplay">
       <property name="frameShape">
-       <enum>QFrame::Shape::StyledPanel</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
       </property>
       <property name="text">
        <string/>
@@ -48,7 +74,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>1207</width>
      <height>33</height>
     </rect>
    </property>
@@ -58,11 +84,17 @@
     </property>
     <addaction name="act_AddImage"/>
     <addaction name="separator"/>
+    <addaction name="act_Clear"/>
+    <addaction name="separator"/>
     <addaction name="act_Close"/>
    </widget>
    <addaction name="mn_File"/>
   </widget>
-  <widget class="QStatusBar" name="sb_MainWindow"/>
+  <widget class="QStatusBar" name="sb_MainWindow">
+   <property name="sizeGripEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
   <action name="act_AddImage">
    <property name="text">
     <string>Add Images</string>
@@ -71,6 +103,11 @@
   <action name="act_Close">
    <property name="text">
     <string>Close</string>
+   </property>
+  </action>
+  <action name="act_Clear">
+   <property name="text">
+    <string>Clear</string>
    </property>
   </action>
  </widget>
