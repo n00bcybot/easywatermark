@@ -15,15 +15,14 @@ class ImageWindow(QMainWindow, Ui_MainWindow):
 
         self.thumbnail_size = QSize(100, 100)
 
-
         # Close the window
         self.act_Close.triggered.connect(self.close)
+
+        # Clear the image picker
         self.act_Clear.triggered.connect(self.clear_image_picker)
 
         # Add images to the file picker
         self.act_AddImage.triggered.connect(self.add_images)
-
-
 
         self.list_widget = QListWidget()
         self.list_widget.setIconSize(self.thumbnail_size)
@@ -36,12 +35,6 @@ class ImageWindow(QMainWindow, Ui_MainWindow):
         self.list_widget.itemClicked.connect(self.show_image_path)
 
         self.layout_Image.addWidget(self.list_widget)
-
-        # Create main layout and add the widgets
-        # self.layout = QVBoxLayout()
-        #
-        # self.layout.addWidget(self.list_widget)
-        # self.setLayout(self.layout)
 
     def add_images(self):
         files, _ = QFileDialog.getOpenFileNames(
@@ -71,9 +64,6 @@ class ImageWindow(QMainWindow, Ui_MainWindow):
         pixmap = QPixmap(image_path)
         pixmap = pixmap.scaled(QSize(self.lb_ImageDisplay.size()), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.lb_ImageDisplay.setPixmap(pixmap)
-
-
-
 
 
 if __name__ == "__main__":
