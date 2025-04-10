@@ -1,30 +1,32 @@
-# Import commonly used libraries
-
 import sys
-from PySide6 import QtCore as qtc
-from PySide6 import QtWidgets as qtw
-from PySide6 import QtGui as qtg
+from PySide6.QtWidgets import (QMainWindow, QApplication, QLabel, QWidget, QVBoxLayout, QListWidget,
+                               QListWidgetItem, QPushButton, QFileDialog, QListView, QListWidgetItem, QListWidget
+                               )
+from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtCore import QSize, Qt
 
-from Main.UI.Main_ui import Ui_MainWindow
-from Browser.browser import BrowserWidget
+from main_ui import Ui_MainWindow
+from ToolBox.toolbox import ToolBoxWidget
 
 
-class MainWindow(qtw.QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Load UI elements
 
-        # Close the windows from the menu
-        self.action_quit.triggered.connect(self.close)
+        # Set app size
+        self.window_size = QSize(1200, 700)
 
-        self.browser = BrowserWidget()
+        # Instantiate the toolbox
+        self.toolbox = ToolBoxWidget()
 
-        # Add the custom widget to the groupbox layout
-        self.gb_layout.addWidget(self.browser)
+        # Connect the toolbox to existing layout
+        self.toolbox.setParent(self.layout_toolbox)
+        # self.layout_toolbox.setMaximumWidth(800)
 
 
 if __name__ == "__main__":
-    app = qtw.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     app.exec()
