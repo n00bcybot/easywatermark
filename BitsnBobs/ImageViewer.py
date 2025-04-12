@@ -1,11 +1,10 @@
 import sys
-from PySide6.QtWidgets import (QMainWindow, QApplication, QLabel, QWidget, QVBoxLayout, QListWidget,
-                               QListWidgetItem, QPushButton, QFileDialog, QListView, QListWidgetItem, QListWidget
+from PySide6.QtWidgets import (QMainWindow, QApplication, QFileDialog, QListWidgetItem, QListWidget
                                )
-from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QSize, Qt
 
-from ImageViewer.UI.ImageViewer_ui import Ui_MainWindow
+from BitsnBobs.ImageViewer_ui import Ui_MainWindow
 
 
 class ImageWindow(QMainWindow, Ui_MainWindow):
