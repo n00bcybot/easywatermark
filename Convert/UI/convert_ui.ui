@@ -20,40 +20,31 @@
   </property>
   <layout class="QVBoxLayout" name="vl_convert">
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Convert</string>
+    <widget class="QComboBox" name="cb_convert">
+     <property name="editable">
+      <bool>false</bool>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QComboBox" name="cb_convert">
-        <property name="editable">
-         <bool>false</bool>
-        </property>
-        <property name="currentText">
-         <string>JPG</string>
-        </property>
-        <property name="maxCount">
-         <number>10</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>JPG</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>PNG</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>TIFF</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-     </layout>
+     <property name="currentText">
+      <string>JPG</string>
+     </property>
+     <property name="maxCount">
+      <number>10</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>JPG</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>PNG</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TIFF</string>
+      </property>
+     </item>
     </widget>
    </item>
   </layout>

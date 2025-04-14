@@ -29,7 +29,7 @@ class Ui_layout_image_display(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.label_image_display = QLabel(layout_image_display)
         self.label_image_display.setObjectName(u"label_image_display")
-        self.label_image_display.setStyleSheet(u"background-color: rgb(224, 255, 219);")
+        self.label_image_display.setStyleSheet(u"")
         self.label_image_display.setScaledContents(False)
         self.label_image_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
 

@@ -25,13 +25,15 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1200, 800)
+        MainWindow.resize(1366, 768)
         self.action_add = QAction(MainWindow)
         self.action_add.setObjectName(u"action_add")
         self.action_clear = QAction(MainWindow)
         self.action_clear.setObjectName(u"action_clear")
         self.action_close = QAction(MainWindow)
         self.action_close.setObjectName(u"action_close")
+        self.action_process = QAction(MainWindow)
+        self.action_process.setObjectName(u"action_process")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.layout_main = QGridLayout(self.centralwidget)
@@ -108,20 +110,12 @@ class Ui_MainWindow(object):
         self.layout_flick = QFrame(self.layout_display_flick)
         self.layout_flick.setObjectName(u"layout_flick")
         self.layout_flick.setMinimumSize(QSize(400, 80))
-        self.layout_flick.setMaximumSize(QSize(16777215, 100))
+        self.layout_flick.setMaximumSize(QSize(16777215, 80))
         self.layout_flick.setFrameShape(QFrame.Shape.StyledPanel)
         self.layout_flick.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout = QHBoxLayout(self.layout_flick)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.wg_ph_flick = QWidget(self.layout_flick)
-        self.wg_ph_flick.setObjectName(u"wg_ph_flick")
-        self.wg_ph_flick.setMinimumSize(QSize(0, 80))
-        self.wg_ph_flick.setMaximumSize(QSize(16777215, 100))
-        self.wg_ph_flick.setStyleSheet(u"background-color: rgb(206, 255, 185);")
-
-        self.horizontalLayout.addWidget(self.wg_ph_flick)
-
 
         self.verticalLayout_2.addWidget(self.layout_flick)
 
@@ -132,7 +126,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1200, 33))
+        self.menubar.setGeometry(QRect(0, 0, 1366, 33))
         self.menuFIle = QMenu(self.menubar)
         self.menuFIle.setObjectName(u"menuFIle")
         MainWindow.setMenuBar(self.menubar)
@@ -143,6 +137,8 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFIle.menuAction())
         self.menuFIle.addAction(self.action_add)
         self.menuFIle.addAction(self.action_clear)
+        self.menuFIle.addSeparator()
+        self.menuFIle.addAction(self.action_process)
         self.menuFIle.addSeparator()
         self.menuFIle.addAction(self.action_close)
 
@@ -157,6 +153,7 @@ class Ui_MainWindow(object):
         self.action_add.setText(QCoreApplication.translate("MainWindow", u"Add Image", None))
         self.action_clear.setText(QCoreApplication.translate("MainWindow", u"Clear Image", None))
         self.action_close.setText(QCoreApplication.translate("MainWindow", u"Close", None))
+        self.action_process.setText(QCoreApplication.translate("MainWindow", u"Process", None))
         self.menuFIle.setTitle(QCoreApplication.translate("MainWindow", u"FIle", None))
     # retranslateUi
 
