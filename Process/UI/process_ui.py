@@ -61,7 +61,7 @@ class Ui_process_dialog(object):
     # setupUi
 
     def retranslateUi(self, process_dialog):
-        process_dialog.setWindowTitle(QCoreApplication.translate("process_dialog", u"Dialog", None))
+        process_dialog.setWindowTitle(QCoreApplication.translate("process_dialog", u"Process Images", None))
         self.lb_select_folder.setText(QCoreApplication.translate("process_dialog", u"Select Output Folder", None))
         self.pb_select_folder.setText(QCoreApplication.translate("process_dialog", u"Browse", None))
         self.pb_process.setText(QCoreApplication.translate("process_dialog", u"Process", None))

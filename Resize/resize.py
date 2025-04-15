@@ -4,20 +4,17 @@ from PySide6.QtWidgets import (QMainWindow, QApplication, QLabel, QWidget, QVBox
                                QToolBox)
 from PySide6.QtGui import QPixmap, QIcon
 from PySide6.QtCore import QSize, Qt
-from ToolBox.UI.toolbox_ui import Ui_wg_toolbox
-from Resize.resize import ResizeWidget
+from Resize.UI.resize_ui import Ui_wg_resize
 
 
-class ToolBoxWidget(QToolBox, Ui_wg_toolbox):
+class ResizeWidget(QWidget, Ui_wg_resize):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Load UI elements
 
-        self.resize_widget = ResizeWidget()
-        self.page_2.layout().addWidget(self.resize_widget)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = ToolBoxWidget()
+    window = ResizeWidget()
     window.show()
     app.exec()

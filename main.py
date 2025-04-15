@@ -71,11 +71,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.process_dialog.pb_process.clicked.connect(self.process_batch)
         # --------------------------------------------------------------------------------------------------
 
+    def image_format(self, image_format):
+        match image_format:
+            case "JPG":
+                return ".jpg"
+            case "PNG":
+                return ".png"
+            case "TIFF":
+                return ".tiff"
+
     def process_batch(self):
         if model["output_folder"] == "":
             QMessageBox.information(self, "Output Folder Not Selected", "Please select an output folder!")
 
         else:
+            resized = False
+            # Get selected format from the format dropdown in "Save As"
             selected_format = self.image_converter.cb_convert.currentText()
             for image_path in model["image_path"]:
                 extension = os.path.splitext(image_path)[1]
@@ -83,11 +94,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 new_name = str(full_name).replace(extension, "")
 
                 image = Image.open(image_path)
-                resized = image.resize((300, 300), Image.Resampling.LANCZOS)
-                # Save to a new file
-                extension = self.image_format(selected_format)
-                resized.save(model["output_folder"] + new_name + "_resized" + extension, format="PNG")
+                if resized == True:
 
+                    image_resized = image.resize((300, 300), Image.Resampling.LANCZOS)
+                    # Save to a new file
+                    extension = self.image_format(selected_format)
+                    image_resized.save(model["output_folder"] + new_name + "_resized" + extension)
+                else:
+                    extension = self.image_format(selected_format)
+                    image.save(model["output_folder"] + new_name + extension)
 
     def process_select_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")
@@ -177,15 +192,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.current_path = model["image_path"][len(model["image_path"]) - 1]
             self.display_image()
-
-    def image_format(self, image_format):
-        match image_format:
-            case "JPG":
-                return ".jpg"
-            case "PNG":
-                return ".png"
-            case "TIFF":
-                return ".tiff"
 
 
 if __name__ == "__main__":
