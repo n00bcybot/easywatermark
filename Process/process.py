@@ -1,5 +1,5 @@
 import sys
-from PySide6.QtWidgets import (QApplication, QListWidget, QDialog)
+from PySide6.QtWidgets import (QApplication, QWidget, QDialog)
 from Process.UI.process_ui import Ui_process_dialog
 
 

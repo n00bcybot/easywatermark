@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>200</width>
-    <height>200</height>
+    <width>300</width>
+    <height>67</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>50</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -19,6 +25,9 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="vl_convert">
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+   </property>
    <item>
     <widget class="QComboBox" name="cb_convert">
      <property name="editable">

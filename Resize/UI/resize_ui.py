@@ -16,28 +16,33 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-    QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-    QRadioButton, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+    QGroupBox, QHBoxLayout, QLabel, QLayout,
+    QLineEdit, QRadioButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_wg_resize(object):
     def setupUi(self, wg_resize):
         if not wg_resize.objectName():
             wg_resize.setObjectName(u"wg_resize")
-        wg_resize.resize(293, 286)
+        wg_resize.resize(300, 286)
+        wg_resize.setMinimumSize(QSize(300, 0))
         self.gridLayout_5 = QGridLayout(wg_resize)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
+        self.gridLayout_5.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.gridLayout_5.setContentsMargins(5, 5, 5, 5)
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.gridLayout.addItem(self.horizontalSpacer, 1, 1, 1, 1)
 
         self.groupBox = QGroupBox(wg_resize)
         self.groupBox.setObjectName(u"groupBox")
+        self.groupBox.setMinimumSize(QSize(300, 0))
         self.gridLayout_4 = QGridLayout(self.groupBox)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.gridLayout_4.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.gridLayout_4.setContentsMargins(5, 5, 5, 5)
         self.label_5 = QLabel(self.groupBox)
         self.label_5.setObjectName(u"label_5")
@@ -87,6 +92,7 @@ class Ui_wg_resize(object):
 
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.radioButton = QRadioButton(wg_resize)
         self.radioButton.setObjectName(u"radioButton")
         self.radioButton.setMinimumSize(QSize(110, 0))
@@ -105,8 +111,10 @@ class Ui_wg_resize(object):
 
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.gridLayout_2.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.radioButton_2 = QRadioButton(wg_resize)
         self.radioButton_2.setObjectName(u"radioButton_2")
         self.radioButton_2.setMinimumSize(QSize(110, 0))
@@ -124,6 +132,7 @@ class Ui_wg_resize(object):
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.horizontalLayout_3 = QHBoxLayout(self.groupBox_2)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.horizontalLayout_3.setContentsMargins(5, 5, 5, 5)
         self.lineEdit_3 = QLineEdit(self.groupBox_2)
         self.lineEdit_3.setObjectName(u"lineEdit_3")
@@ -152,8 +161,10 @@ class Ui_wg_resize(object):
 
         self.gridLayout_3 = QGridLayout()
         self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.gridLayout_3.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.radioButton_3 = QRadioButton(wg_resize)
         self.radioButton_3.setObjectName(u"radioButton_3")
         self.radioButton_3.setMinimumSize(QSize(110, 0))
@@ -172,6 +183,7 @@ class Ui_wg_resize(object):
         self.groupBox_3.setFlat(False)
         self.horizontalLayout_4 = QHBoxLayout(self.groupBox_3)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.horizontalLayout_4.setContentsMargins(5, 5, 5, 5)
         self.comboBox = QComboBox(self.groupBox_3)
         self.comboBox.addItem("")
@@ -193,6 +205,7 @@ class Ui_wg_resize(object):
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.label = QLabel(wg_resize)
         self.label.setObjectName(u"label")
 

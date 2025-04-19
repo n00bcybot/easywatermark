@@ -35,7 +35,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Instantiate ImageDisplay
         # --------------------------------------------------------------------------------------------------
         self.image_viewer = ImageViewer()
-        self.layout_image_viewer.layout().addWidget(self.image_viewer)  # Connect to layout
+        self.layout_viewer.layout().addWidget(self.image_viewer)  # Connect to layout
         self.action_add.triggered.connect(self.add_image)  # Connect to menu
         self.image_viewer.list_viewer.itemClicked.connect(self.show_image_path)
         self.image_viewer.list_viewer.itemClicked.connect(self.display_image)
@@ -45,7 +45,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Instantiate ImageDisplay
         # --------------------------------------------------------------------------------------------------
         self.image_display = ImageDisplay()
-        self.layout_image_display.layout().addWidget(self.image_display)
+        self.layout_display.layout().addWidget(self.image_display)
         # --------------------------------------------------------------------------------------------------
 
         # Instantiate Flicker
@@ -54,13 +54,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.layout_flick.layout().addWidget(self.image_flicker)
         self.image_flicker.bt_next.clicked.connect(self.show_next_image)
         self.image_flicker.bt_previous.clicked.connect(self.show_previous_image)
-
-        # Instantiate ConvertWidget
-        # --------------------------------------------------------------------------------------------------
-        self.image_converter = ConvertWidget()
-        self.toolbox.layout_saveas.layout().addWidget(self.image_converter)
-
-        # --------------------------------------------------------------------------------------------------
 
         # Instantiate Process dialog
         # --------------------------------------------------------------------------------------------------
@@ -87,22 +80,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             resized = False
             # Get selected format from the format dropdown in "Save As"
-            selected_format = self.image_converter.cb_convert.currentText()
+            selected_format = self.toolbox.convert_widget.cb_convert.currentText()
+            # selected_format = self.image_converter.cb_convert.currentText()
             for image_path in model["image_path"]:
                 extension = os.path.splitext(image_path)[1]
                 full_name = os.path.split(image_path)[1]
                 new_name = str(full_name).replace(extension, "")
 
+                # Change format
+                extension = self.image_format(selected_format)
+                # Create image object
                 image = Image.open(image_path)
-                if resized == True:
 
-                    image_resized = image.resize((300, 300), Image.Resampling.LANCZOS)
-                    # Save to a new file
-                    extension = self.image_format(selected_format)
-                    image_resized.save(model["output_folder"] + new_name + "_resized" + extension)
+                if resized:
+                    image_resized = image.resize((300, 300), Image.Resampling.LANCZOS)  # Resize
+                    image_resized.save(model["output_folder"] + new_name + "_resized" + extension)  # Rename and save
                 else:
-                    extension = self.image_format(selected_format)
-                    image.save(model["output_folder"] + new_name + extension)
+                    image.save(model["output_folder"] + new_name + extension)  # Rename and save
 
     def process_select_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")

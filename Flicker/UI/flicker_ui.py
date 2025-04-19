@@ -15,16 +15,18 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QPushButton, QSizePolicy,
-    QSpacerItem, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLayout, QPushButton,
+    QSizePolicy, QSpacerItem, QWidget)
 
 class Ui_wg_flicker(object):
     def setupUi(self, wg_flicker):
         if not wg_flicker.objectName():
             wg_flicker.setObjectName(u"wg_flicker")
         wg_flicker.resize(1209, 80)
+        wg_flicker.setMaximumSize(QSize(16777215, 16777215))
         self.horizontalLayout = QHBoxLayout(wg_flicker)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setSizeConstraint(QLayout.SizeConstraint.SetMaximumSize)
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer)

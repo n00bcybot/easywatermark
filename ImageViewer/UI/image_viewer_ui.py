@@ -23,13 +23,13 @@ class Ui_wg_image_viewer(object):
     def setupUi(self, wg_image_viewer):
         if not wg_image_viewer.objectName():
             wg_image_viewer.setObjectName(u"wg_image_viewer")
-        wg_image_viewer.resize(320, 863)
+        wg_image_viewer.resize(300, 400)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(wg_image_viewer.sizePolicy().hasHeightForWidth())
         wg_image_viewer.setSizePolicy(sizePolicy)
-        wg_image_viewer.setMinimumSize(QSize(0, 400))
+        wg_image_viewer.setMinimumSize(QSize(0, 200))
         self.gridLayout = QGridLayout(wg_image_viewer)
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(u"gridLayout")

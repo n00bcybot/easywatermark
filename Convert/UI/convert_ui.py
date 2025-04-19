@@ -15,19 +15,21 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QSizePolicy, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QLayout, QSizePolicy,
+    QVBoxLayout, QWidget)
 
 class Ui_wg_convert(object):
     def setupUi(self, wg_convert):
         if not wg_convert.objectName():
             wg_convert.setObjectName(u"wg_convert")
-        wg_convert.resize(200, 200)
+        wg_convert.resize(300, 67)
+        wg_convert.setMinimumSize(QSize(300, 50))
         font = QFont()
         font.setPointSize(12)
         wg_convert.setFont(font)
         self.vl_convert = QVBoxLayout(wg_convert)
         self.vl_convert.setObjectName(u"vl_convert")
+        self.vl_convert.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.cb_convert = QComboBox(wg_convert)
         self.cb_convert.addItem("")
         self.cb_convert.addItem("")
