@@ -15,69 +15,83 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-    QGroupBox, QHBoxLayout, QLabel, QLayout,
-    QLineEdit, QRadioButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
+    QGridLayout, QGroupBox, QHBoxLayout, QLabel,
+    QLayout, QLineEdit, QRadioButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_wg_resize(object):
     def setupUi(self, wg_resize):
         if not wg_resize.objectName():
             wg_resize.setObjectName(u"wg_resize")
-        wg_resize.resize(300, 286)
+        wg_resize.resize(300, 323)
         wg_resize.setMinimumSize(QSize(300, 0))
         self.gridLayout_5 = QGridLayout(wg_resize)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.gridLayout_5.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
-        self.gridLayout_5.setContentsMargins(5, 5, 5, 5)
-        self.gridLayout = QGridLayout()
+        self.fr_container = QFrame(wg_resize)
+        self.fr_container.setObjectName(u"fr_container")
+        self.fr_container.setFrameShape(QFrame.Shape.NoFrame)
+        self.fr_container.setFrameShadow(QFrame.Shadow.Raised)
+        self.gridLayout = QGridLayout(self.fr_container)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        self.rb_custom = QRadioButton(self.fr_container)
+        self.rb_custom.setObjectName(u"rb_custom")
+        self.rb_custom.setMinimumSize(QSize(110, 0))
 
-        self.gridLayout.addItem(self.horizontalSpacer, 1, 1, 1, 1)
+        self.verticalLayout.addWidget(self.rb_custom)
 
-        self.groupBox = QGroupBox(wg_resize)
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer_3)
+
+
+        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
+
+        self.groupBox = QGroupBox(self.fr_container)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setMinimumSize(QSize(300, 0))
+        self.groupBox.setMinimumSize(QSize(0, 0))
         self.gridLayout_4 = QGridLayout(self.groupBox)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.gridLayout_4.setContentsMargins(5, 5, 5, 5)
-        self.label_5 = QLabel(self.groupBox)
-        self.label_5.setObjectName(u"label_5")
+        self.lb_width = QLabel(self.groupBox)
+        self.lb_width.setObjectName(u"lb_width")
 
-        self.gridLayout_4.addWidget(self.label_5, 0, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.lb_width, 0, 0, 1, 1)
 
-        self.checkBox = QCheckBox(self.groupBox)
-        self.checkBox.setObjectName(u"checkBox")
+        self.chb_keep_ratio = QCheckBox(self.groupBox)
+        self.chb_keep_ratio.setObjectName(u"chb_keep_ratio")
 
-        self.gridLayout_4.addWidget(self.checkBox, 2, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.chb_keep_ratio, 2, 0, 1, 2)
 
-        self.label_6 = QLabel(self.groupBox)
-        self.label_6.setObjectName(u"label_6")
+        self.lb_height = QLabel(self.groupBox)
+        self.lb_height.setObjectName(u"lb_height")
 
-        self.gridLayout_4.addWidget(self.label_6, 0, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.lb_height, 0, 1, 1, 1)
 
-        self.lineEdit = QLineEdit(self.groupBox)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.le_width = QLineEdit(self.groupBox)
+        self.le_width.setObjectName(u"le_width")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
-        self.lineEdit.setSizePolicy(sizePolicy)
-        self.lineEdit.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit.setSizeIncrement(QSize(0, 0))
+        sizePolicy.setHeightForWidth(self.le_width.sizePolicy().hasHeightForWidth())
+        self.le_width.setSizePolicy(sizePolicy)
+        self.le_width.setMaximumSize(QSize(60, 16777215))
+        self.le_width.setSizeIncrement(QSize(0, 0))
 
-        self.gridLayout_4.addWidget(self.lineEdit, 1, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.le_width, 1, 0, 1, 1)
 
-        self.lineEdit_2 = QLineEdit(self.groupBox)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-        sizePolicy.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
-        self.lineEdit_2.setSizePolicy(sizePolicy)
-        self.lineEdit_2.setMaximumSize(QSize(60, 16777215))
+        self.le_height = QLineEdit(self.groupBox)
+        self.le_height.setObjectName(u"le_height")
+        sizePolicy.setHeightForWidth(self.le_height.sizePolicy().hasHeightForWidth())
+        self.le_height.setSizePolicy(sizePolicy)
+        self.le_height.setMaximumSize(QSize(60, 16777215))
 
-        self.gridLayout_4.addWidget(self.lineEdit_2, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.le_height, 1, 1, 1, 1)
 
         self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -90,24 +104,9 @@ class Ui_wg_resize(object):
 
         self.gridLayout.addWidget(self.groupBox, 0, 1, 1, 1)
 
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
-        self.radioButton = QRadioButton(wg_resize)
-        self.radioButton.setObjectName(u"radioButton")
-        self.radioButton.setMinimumSize(QSize(110, 0))
+        self.horizontalSpacer = QSpacerItem(161, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.verticalLayout.addWidget(self.radioButton)
-
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout.addItem(self.verticalSpacer_3)
-
-
-        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
-
-
-        self.gridLayout_5.addLayout(self.gridLayout, 0, 0, 1, 1)
+        self.gridLayout.addItem(self.horizontalSpacer, 1, 1, 1, 1)
 
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName(u"gridLayout_2")
@@ -115,11 +114,11 @@ class Ui_wg_resize(object):
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
-        self.radioButton_2 = QRadioButton(wg_resize)
-        self.radioButton_2.setObjectName(u"radioButton_2")
-        self.radioButton_2.setMinimumSize(QSize(110, 0))
+        self.rb_percent = QRadioButton(self.fr_container)
+        self.rb_percent.setObjectName(u"rb_percent")
+        self.rb_percent.setMinimumSize(QSize(110, 0))
 
-        self.verticalLayout_2.addWidget(self.radioButton_2)
+        self.verticalLayout_2.addWidget(self.rb_percent)
 
         self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -128,22 +127,22 @@ class Ui_wg_resize(object):
 
         self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
 
-        self.groupBox_2 = QGroupBox(wg_resize)
+        self.groupBox_2 = QGroupBox(self.fr_container)
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.horizontalLayout_3 = QHBoxLayout(self.groupBox_2)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.horizontalLayout_3.setContentsMargins(5, 5, 5, 5)
-        self.lineEdit_3 = QLineEdit(self.groupBox_2)
-        self.lineEdit_3.setObjectName(u"lineEdit_3")
-        self.lineEdit_3.setMaximumSize(QSize(30, 16777215))
+        self.le_percent = QLineEdit(self.groupBox_2)
+        self.le_percent.setObjectName(u"le_percent")
+        self.le_percent.setMaximumSize(QSize(30, 16777215))
 
-        self.horizontalLayout_3.addWidget(self.lineEdit_3)
+        self.horizontalLayout_3.addWidget(self.le_percent)
 
-        self.label_7 = QLabel(self.groupBox_2)
-        self.label_7.setObjectName(u"label_7")
+        self.lb_percent = QLabel(self.groupBox_2)
+        self.lb_percent.setObjectName(u"lb_percent")
 
-        self.horizontalLayout_3.addWidget(self.label_7)
+        self.horizontalLayout_3.addWidget(self.lb_percent)
 
         self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -157,19 +156,19 @@ class Ui_wg_resize(object):
         self.gridLayout_2.addItem(self.horizontalSpacer_2, 1, 1, 1, 1)
 
 
-        self.gridLayout_5.addLayout(self.gridLayout_2, 1, 0, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_2, 2, 0, 1, 2)
 
         self.gridLayout_3 = QGridLayout()
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.gridLayout_3.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        self.gridLayout_3.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
-        self.radioButton_3 = QRadioButton(wg_resize)
-        self.radioButton_3.setObjectName(u"radioButton_3")
-        self.radioButton_3.setMinimumSize(QSize(110, 0))
+        self.rb_predefined = QRadioButton(self.fr_container)
+        self.rb_predefined.setObjectName(u"rb_predefined")
+        self.rb_predefined.setMinimumSize(QSize(110, 0))
 
-        self.verticalLayout_3.addWidget(self.radioButton_3)
+        self.verticalLayout_3.addWidget(self.rb_predefined)
 
         self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -178,20 +177,26 @@ class Ui_wg_resize(object):
 
         self.gridLayout_3.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
 
-        self.groupBox_3 = QGroupBox(wg_resize)
+        self.groupBox_3 = QGroupBox(self.fr_container)
         self.groupBox_3.setObjectName(u"groupBox_3")
         self.groupBox_3.setFlat(False)
         self.horizontalLayout_4 = QHBoxLayout(self.groupBox_3)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
         self.horizontalLayout_4.setContentsMargins(5, 5, 5, 5)
-        self.comboBox = QComboBox(self.groupBox_3)
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.setObjectName(u"comboBox")
+        self.cb_psize = QComboBox(self.groupBox_3)
+        self.cb_psize.addItem("")
+        self.cb_psize.addItem("")
+        self.cb_psize.addItem("")
+        self.cb_psize.setObjectName(u"cb_psize")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.cb_psize.sizePolicy().hasHeightForWidth())
+        self.cb_psize.setSizePolicy(sizePolicy1)
+        self.cb_psize.setFrame(False)
 
-        self.horizontalLayout_4.addWidget(self.comboBox)
+        self.horizontalLayout_4.addWidget(self.cb_psize)
 
 
         self.gridLayout_3.addWidget(self.groupBox_3, 0, 1, 1, 1)
@@ -201,47 +206,63 @@ class Ui_wg_resize(object):
         self.gridLayout_3.addItem(self.horizontalSpacer_3, 1, 1, 1, 1)
 
 
-        self.gridLayout_5.addLayout(self.gridLayout_3, 2, 0, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_3, 3, 0, 1, 2)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
-        self.label = QLabel(wg_resize)
-        self.label.setObjectName(u"label")
+        self.lb_projected = QLabel(self.fr_container)
+        self.lb_projected.setObjectName(u"lb_projected")
 
-        self.horizontalLayout.addWidget(self.label)
+        self.horizontalLayout.addWidget(self.lb_projected)
 
-        self.label_2 = QLabel(wg_resize)
-        self.label_2.setObjectName(u"label_2")
+        self.lb_projected_dsp = QLabel(self.fr_container)
+        self.lb_projected_dsp.setObjectName(u"lb_projected_dsp")
 
-        self.horizontalLayout.addWidget(self.label_2)
+        self.horizontalLayout.addWidget(self.lb_projected_dsp)
 
 
-        self.gridLayout_5.addLayout(self.horizontalLayout, 3, 0, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout, 4, 0, 1, 2)
+
+
+        self.gridLayout_5.addWidget(self.fr_container, 1, 0, 1, 1)
+
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.chb_resize = QCheckBox(wg_resize)
+        self.chb_resize.setObjectName(u"chb_resize")
+
+        self.horizontalLayout_2.addWidget(self.chb_resize)
+
+
+        self.gridLayout_5.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
 
 
         self.retranslateUi(wg_resize)
+        self.chb_resize.clicked["bool"].connect(self.fr_container.setEnabled)
 
         QMetaObject.connectSlotsByName(wg_resize)
     # setupUi
 
     def retranslateUi(self, wg_resize):
-        wg_resize.setWindowTitle(QCoreApplication.translate("wg_resize", u"Resize", None))
+        wg_resize.setWindowTitle(QCoreApplication.translate("wg_resize", u"ResizeWidget", None))
+        self.rb_custom.setText(QCoreApplication.translate("wg_resize", u"Custom Size", None))
         self.groupBox.setTitle("")
-        self.label_5.setText(QCoreApplication.translate("wg_resize", u"  Width", None))
-        self.checkBox.setText(QCoreApplication.translate("wg_resize", u"Keep Aspect Ratio", None))
-        self.label_6.setText(QCoreApplication.translate("wg_resize", u"  Height", None))
-        self.radioButton.setText(QCoreApplication.translate("wg_resize", u"Custom Size", None))
-        self.radioButton_2.setText(QCoreApplication.translate("wg_resize", u"By Percentage", None))
+        self.lb_width.setText(QCoreApplication.translate("wg_resize", u"  Width", None))
+        self.chb_keep_ratio.setText(QCoreApplication.translate("wg_resize", u"Keep Aspect Ratio", None))
+        self.lb_height.setText(QCoreApplication.translate("wg_resize", u"  Height", None))
+        self.rb_percent.setText(QCoreApplication.translate("wg_resize", u"By Percentage", None))
         self.groupBox_2.setTitle("")
-        self.label_7.setText(QCoreApplication.translate("wg_resize", u"%", None))
-        self.radioButton_3.setText(QCoreApplication.translate("wg_resize", u"Predefined Size", None))
+        self.lb_percent.setText(QCoreApplication.translate("wg_resize", u"%", None))
+        self.rb_predefined.setText(QCoreApplication.translate("wg_resize", u"Predefined Size", None))
         self.groupBox_3.setTitle("")
-        self.comboBox.setItemText(0, QCoreApplication.translate("wg_resize", u"1920 x 1080 (Full HD)", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("wg_resize", u"2048\u2009\u00d7\u20091152 (QWXGA)", None))
-        self.comboBox.setItemText(2, QCoreApplication.translate("wg_resize", u"800 x 600", None))
+        self.cb_psize.setItemText(0, QCoreApplication.translate("wg_resize", u"1920 x 1080 (Full HD)", None))
+        self.cb_psize.setItemText(1, QCoreApplication.translate("wg_resize", u"2048\u2009\u00d7\u20091152 (QWXGA)", None))
+        self.cb_psize.setItemText(2, QCoreApplication.translate("wg_resize", u"800 x 600", None))
 
-        self.label.setText(QCoreApplication.translate("wg_resize", u"Projected Size", None))
-        self.label_2.setText("")
+        self.cb_psize.setCurrentText(QCoreApplication.translate("wg_resize", u"1920 x 1080 (Full HD)", None))
+        self.lb_projected.setText(QCoreApplication.translate("wg_resize", u"Projected Size:  ", None))
+        self.lb_projected_dsp.setText("")
+        self.chb_resize.setText(QCoreApplication.translate("wg_resize", u"Resize", None))
     # retranslateUi
 

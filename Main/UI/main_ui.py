@@ -26,6 +26,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1366, 768)
+        MainWindow.setStyleSheet(u"")
         self.action_add = QAction(MainWindow)
         self.action_add.setObjectName(u"action_add")
         self.action_clear = QAction(MainWindow)
@@ -54,7 +55,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.sp_image_tools.sizePolicy().hasHeightForWidth())
         self.sp_image_tools.setSizePolicy(sizePolicy1)
-        self.sp_image_tools.setMinimumSize(QSize(0, 0))
+        self.sp_image_tools.setMinimumSize(QSize(300, 0))
         self.sp_image_tools.setMaximumSize(QSize(16777215, 16777215))
         self.sp_image_tools.setBaseSize(QSize(0, 0))
         self.sp_image_tools.setOrientation(Qt.Orientation.Vertical)

@@ -22,7 +22,7 @@ class Ui_wg_toolbox(object):
     def setupUi(self, wg_toolbox):
         if not wg_toolbox.objectName():
             wg_toolbox.setObjectName(u"wg_toolbox")
-        wg_toolbox.resize(300, 420)
+        wg_toolbox.resize(302, 420)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -46,6 +46,7 @@ class Ui_wg_toolbox(object):
         self.bt_watermark.setMinimumSize(QSize(0, 25))
         self.bt_watermark.setCheckable(True)
         self.bt_watermark.setChecked(False)
+        self.bt_watermark.setAutoExclusive(False)
         self.bt_watermark.setAutoDefault(False)
         self.bt_watermark.setFlat(False)
 
@@ -75,7 +76,8 @@ class Ui_wg_toolbox(object):
         self.bt_rename.setObjectName(u"bt_rename")
         self.bt_rename.setMinimumSize(QSize(0, 25))
         self.bt_rename.setCheckable(True)
-        self.bt_rename.setChecked(False)
+        self.bt_rename.setChecked(True)
+        self.bt_rename.setAutoExclusive(False)
         self.bt_rename.setAutoDefault(False)
         self.bt_rename.setFlat(False)
 
@@ -105,7 +107,8 @@ class Ui_wg_toolbox(object):
         self.bt_save.setObjectName(u"bt_save")
         self.bt_save.setMinimumSize(QSize(0, 25))
         self.bt_save.setCheckable(True)
-        self.bt_save.setChecked(False)
+        self.bt_save.setChecked(True)
+        self.bt_save.setAutoExclusive(False)
         self.bt_save.setAutoDefault(False)
         self.bt_save.setFlat(False)
 
@@ -135,7 +138,8 @@ class Ui_wg_toolbox(object):
         self.bt_resize.setObjectName(u"bt_resize")
         self.bt_resize.setMinimumSize(QSize(0, 25))
         self.bt_resize.setCheckable(True)
-        self.bt_resize.setChecked(False)
+        self.bt_resize.setChecked(True)
+        self.bt_resize.setAutoExclusive(False)
         self.bt_resize.setAutoDefault(False)
         self.bt_resize.setFlat(False)
 

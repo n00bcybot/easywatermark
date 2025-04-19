@@ -1,9 +1,10 @@
 import sys
-from PySide6.QtWidgets import (QApplication, QWidget)
-from Convert.UI.convert_ui import Ui_wg_convert
+from PySide6.QtWidgets import (QApplication, QWidget,)
+
+from Rename.UI.rename_ui import Ui_Rename
 
 
-class ConvertWidget(QWidget, Ui_wg_convert):
+class RenameWidget(QWidget, Ui_Rename):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Load UI elements
@@ -11,6 +12,6 @@ class ConvertWidget(QWidget, Ui_wg_convert):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = ConvertWidget()
+    window = RenameWidget()
     window.show()
     app.exec()

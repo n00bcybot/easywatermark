@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0">
@@ -38,7 +41,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>300</width>
          <height>0</height>
         </size>
        </property>

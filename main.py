@@ -11,7 +11,6 @@ from ToolBox.toolbox import ToolBoxWidget
 from ImageViewer.image_viewer import ImageViewer
 from ImageDisplay.image_display import ImageDisplay
 from Flicker.flicker import FlickerWidget
-from Convert.convert import ConvertWidget
 from Process.process import ProcessDialog
 
 
@@ -26,13 +25,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Clear the image picker
         self.action_clear.triggered.connect(self.clear_image_picker)
 
-        # Instantiate the ToolBoxWidget
+        # Import ToolBoxWidget
         # --------------------------------------------------------------------------------------------------
         self.toolbox = ToolBoxWidget()
         self.layout_toolbox.layout().addWidget(self.toolbox)  # Connect the toolbox to existing layout
         # --------------------------------------------------------------------------------------------------
 
-        # Instantiate ImageDisplay
+        # Import ImageDisplay
         # --------------------------------------------------------------------------------------------------
         self.image_viewer = ImageViewer()
         self.layout_viewer.layout().addWidget(self.image_viewer)  # Connect to layout
@@ -42,20 +41,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # --------------------------------------------------------------------------------------------------
 
-        # Instantiate ImageDisplay
+        # Import ImageDisplay
         # --------------------------------------------------------------------------------------------------
         self.image_display = ImageDisplay()
         self.layout_display.layout().addWidget(self.image_display)
         # --------------------------------------------------------------------------------------------------
 
-        # Instantiate Flicker
+        # Import Flicker
         # --------------------------------------------------------------------------------------------------
         self.image_flicker = FlickerWidget()
         self.layout_flick.layout().addWidget(self.image_flicker)
         self.image_flicker.bt_next.clicked.connect(self.show_next_image)
         self.image_flicker.bt_previous.clicked.connect(self.show_previous_image)
 
-        # Instantiate Process dialog
+        # Import Process dialog
         # --------------------------------------------------------------------------------------------------
         self.process_dialog = ProcessDialog()
         # Connect menubar to open process dialog
@@ -139,8 +138,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.image_display.label_image_display.setPixmap(scaled_pixmap)
 
     def clear_image_picker(self):
-        self.image_viewer.list_viewer.clear()
-        model.clear()
+        self.image_viewer.list_viewer.clear()  # Clear image viewer
+        model["image_path"].clear()  # Clear the paths list as well
+
 
     def show_image_path(self, item):
         # Retrieve user data, previously acquired in add_images

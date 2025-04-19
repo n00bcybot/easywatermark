@@ -23,11 +23,11 @@ image_paths_list = ["C:/Users/fresh/Desktop/repos/easywatermark/images/_MG_1893_
                     "C:/Users/fresh/Desktop/repos/easywatermark/images/_MG_1894_.jpg",
                     "C:/Users/fresh/Desktop/repos/easywatermark/images/_MG_1895_.jpg"]
 
-box_replace_name = ""
-box_prefix = "ghj"
-box_suffix = "ghj"
+box_replace_name = "kjhl"
+box_prefix = ""
+box_suffix = ""
 dm = delimiter["underscore"]
-counter = True
+counter = False
 
 
 def run_rename(path, prefix, replace_name, base_name, suffix, count, extension):
