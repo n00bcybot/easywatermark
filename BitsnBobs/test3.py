@@ -8,11 +8,14 @@ delimiter = {
 
 data = {
     "directory": "",
-    "file name": "",
-    "base name": "",
-    "path no ext": "",
+    "file_name": "",
+    "base_name": "",
+    "path_no_ext": "",
     "extension": "",
-    "replace name": "",
+    "replace_name": "",
+    "remove_string": "",
+    "remove_first": "",
+    "remove_last": "",
     "prefix": "",
     "suffix": "",
     "delimiter": "",
@@ -72,12 +75,12 @@ def run_rename(path, prefix, replace_name, base_name, suffix, count, extension):
 
 # Set data dictionary
 def set_data(image_path):
-    data["directory"], data["file name"] = os.path.split(image_path)
+    data["directory"], data["file_name"] = os.path.split(image_path)
     data["path no ext"], data["extension"] = os.path.splitext(image_path)
-    data["base name"] = data["file name"].replace(data["extension"], "")
+    data["base_name"] = data["file_name"].replace(data["extension"], "")
     data["delimiter"] = dm
     if box_replace_name:
-        data["replace name"] = box_replace_name
+        data["replace_name"] = box_replace_name
     if box_prefix:
         data["prefix"] = box_prefix
     if box_suffix:
@@ -89,7 +92,7 @@ def set_data(image_path):
 index = 1
 for image in image_paths_list:
     set_data(image)
-    run_rename(data["directory"] + "/", data["prefix"], data["replace name"], data["base name"], data["suffix"],
+    run_rename(data["directory"] + "/", data["prefix"], data["replace_name"], data["base_name"], data["suffix"],
                data["counter"],
                data["extension"])
     index += 1

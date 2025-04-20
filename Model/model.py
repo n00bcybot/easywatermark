@@ -33,3 +33,25 @@ process_settings = {
 
     }
 }
+
+delimiter = {
+    "dot": ".",
+    "dash": "-",
+    "underscore": "_"
+}
+
+data = {
+    "directory": "",
+    "file_name": "",
+    "base_name": "",
+    "path_no_ext": "",
+    "extension": "",
+    "replace_name": "",
+    "remove_string": "",
+    "remove_first": "",
+    "remove_last": "",
+    "prefix": "",
+    "suffix": "",
+    "delimiter": "",
+    "counter": ""
+}

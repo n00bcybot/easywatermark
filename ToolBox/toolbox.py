@@ -36,6 +36,9 @@ class ToolBoxWidget(QWidget, Ui_wg_toolbox, ):
         self.rename_widget = RenameWidget()
         self.page_3.layout().addWidget(self.rename_widget)
         self.rename_widget.fr_container.setDisabled(True)
+        self.rename_widget.fr_keep_name.setDisabled(True)
+        self.rename_widget.fr_new_name.setDisabled(True)
+        self.rename_widget.comb_digit.setDisabled(True)
 
 
 if __name__ == "__main__":
