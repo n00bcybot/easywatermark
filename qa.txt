@@ -1,0 +1,7 @@
+- try to add non image files
+- try to add large number of files
+- try to add large very large files (resolution, size in bytes)
+
+- try to remove more characters from the file name than the number of characters in the name
+- try to type characters in the numbers text box
+- try to rename the file with inappropriate characters

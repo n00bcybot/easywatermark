@@ -6,7 +6,7 @@ model = {
     "output_folder": ""
 }
 
-process_settings = {
+process = {
     "watermark": {
 
     },

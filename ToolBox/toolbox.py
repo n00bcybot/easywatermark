@@ -14,7 +14,6 @@ class ToolBoxWidget(QWidget, Ui_wg_toolbox, ):
         super().__init__()
         self.setupUi(self)  # Load UI elements
 
-
         self.page_2.setHidden(True)
         self.page_3.setHidden(True)
         self.page_4.setHidden(True)
@@ -23,8 +22,11 @@ class ToolBoxWidget(QWidget, Ui_wg_toolbox, ):
         # --------------------------------------------------------------------------------------------------
         self.resize_widget = ResizeWidget()
         self.page_2.layout().addWidget(self.resize_widget)
-        self.resize_widget.fr_container.setDisabled(True)
 
+        self.resize_widget.fr_container.setDisabled(True)
+        self.resize_widget.fr_custom_size.setDisabled(True)
+        self.resize_widget.fr_percent.setDisabled(True)
+        self.resize_widget.fr_predefined.setDisabled(True)
 
         # Import Convert widget
         # --------------------------------------------------------------------------------------------------
@@ -35,6 +37,7 @@ class ToolBoxWidget(QWidget, Ui_wg_toolbox, ):
         # --------------------------------------------------------------------------------------------------
         self.rename_widget = RenameWidget()
         self.page_3.layout().addWidget(self.rename_widget)
+
         self.rename_widget.fr_container.setDisabled(True)
         self.rename_widget.fr_keep_name.setDisabled(True)
         self.rename_widget.fr_new_name.setDisabled(True)

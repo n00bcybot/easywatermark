@@ -1,10 +1,9 @@
 import sys
 import os
 from PIL import Image
-from PySide6.QtWidgets import (QMainWindow, QApplication, QListWidgetItem, QPushButton, QFileDialog, QListView,
-                               QListWidgetItem, QListWidget, QDialog, QMessageBox)
-from PySide6.QtGui import QPixmap, QIcon
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtWidgets import (QMainWindow, QApplication, QFileDialog, QMessageBox, QListWidgetItem)
+
+from PySide6.QtCore import Qt
 
 from Model.model import *
 from Main.UI.main_ui import Ui_MainWindow
@@ -117,6 +116,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if str(string) in name:
             new_name = name.replace(str(string), "")
             return new_name
+
     def remove_first(self, name, number):
         if number:
             if int(number) < len(name):
@@ -124,6 +124,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return str(new_name)
         else:
             return name
+
     def remove_last(self, name, number):
         if number:
             if int(number) < len(name):
@@ -132,13 +133,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             return name
 
+    def predefined_size(self, selection):
+        match selection:
+            case "1920 x 1080 (Full HD)":
+                width = 1920
+                height = 1080
+                return width, height
+            case "800 x 600":
+                width = 800
+                height = 600
+                return width, height
+
     def set_image_data(self, image_path):
         data["directory"], data["file_name"] = os.path.split(image_path)
         data["path_no_ext"], data["extension"] = os.path.splitext(image_path)
         data["base_name"] = data["file_name"].replace(data["extension"], "")
 
-    def set_rename_data(self):
-        index = 1
+    def set_rename_data(self, index):
+
         data["replace_name"] = self.toolbox.rename_widget.le_new_name.text()
         data["remove_string"] = self.toolbox.rename_widget.le_remove_string.text()
         data["remove_first"] = self.toolbox.rename_widget.le_remove_first.text()
@@ -147,8 +159,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         data["suffix"] = self.toolbox.rename_widget.le_add_suffix.text()
         count = self.get_digit(self.toolbox.rename_widget.comb_digit.currentText())
         data["counter"] = f"{index:0{count}}"
-        print(data)
         data["delimiter"] = self.set_delimiter(self.toolbox.rename_widget.comb_delimiter.currentText())
+        selected_format = self.toolbox.convert_widget.cb_convert.currentText()
+        data["extension"] = self.image_format(selected_format)
 
     def set_preview(self):
         self.set_image_data(model["image_path"][0])
@@ -157,7 +170,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.toolbox.rename_widget.lb_preview.setText(result)
 
     def set_dynamic_preview(self):
-        self.set_rename_data()
+        self.set_rename_data(index=1)
         if not self.toolbox.rename_widget.chb_add_count.isChecked():
             data["counter"] = ""
 
@@ -167,9 +180,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.toolbox.rename_widget.rb_keep.isChecked():
             data["new_name"] = data["base_name"]
             if self.toolbox.rename_widget.rb_remove_string.isChecked():
-                data["new_name"] = self.remove_string(data["base_name"], str(self.toolbox.rename_widget.le_remove_string.text()))
+                data["new_name"] = self.remove_string(data["base_name"],
+                                                      str(self.toolbox.rename_widget.le_remove_string.text()))
             elif self.toolbox.rename_widget.rb_remove_first.isChecked():
-                data["new_name"] = self.remove_first(data["base_name"], self.toolbox.rename_widget.le_remove_first.text())
+                data["new_name"] = self.remove_first(data["base_name"],
+                                                     self.toolbox.rename_widget.le_remove_first.text())
             elif self.toolbox.rename_widget.rb_remove_last.isChecked():
                 data["new_name"] = self.remove_last(data["base_name"], self.toolbox.rename_widget.le_remove_last.text())
 
@@ -183,13 +198,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         variable = [var for var in vars_list if var]
         new_name = "/" + dm.join(variable) + data["extension"]
+
         print(vars_list)
 
         self.toolbox.rename_widget.lb_preview.setText(new_name)
 
+        # Set the new name for later use in processing
+        new_list = [var for var in vars_list if var != data["counter"]]
+        data["new_name"] = dm.join(new_list)
 
     def run_rename(self):
-
         self.toolbox.rename_widget.chb_rename.clicked.connect(self.set_preview)
 
     def process_batch(self):
@@ -198,26 +216,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         else:
 
-            resized = False
-            # Get selected format from the format dropdown in "Save As"
-            selected_format = self.toolbox.convert_widget.cb_convert.currentText()
-            # selected_format = self.image_converter.cb_convert.currentText()
+            index = 1
             for image_path in model["image_path"]:
-                extension = os.path.splitext(image_path)[1]
-                full_name = os.path.split(image_path)[1]
-                new_name = str(full_name).replace(extension, "")
 
-                # Change format
-                extension = self.image_format(selected_format)
+                self.set_image_data(image_path)
+                self.set_rename_data(index)
 
                 # Create image object
                 image = Image.open(image_path)
+                image_resized = None
 
-                if resized:
-                    image_resized = image.resize((300, 300), Image.Resampling.LANCZOS)  # Resize
-                    image_resized.save(model["output_folder"] + new_name + "_resized" + extension)  # Rename and save
+                if self.toolbox.resize_widget.chb_resize.isChecked():
+                    if self.toolbox.resize_widget.rb_custom.isChecked():
+                        width = int(self.toolbox.resize_widget.le_width.text())
+                        height = int(self.toolbox.resize_widget.le_height.text())
+                        image_resized = image.resize((width, height), Image.Resampling.LANCZOS)  # Resize
+
+                    elif self.toolbox.resize_widget.rb_percent.isChecked():
+                        image_resized = image.resize((300, 300), Image.Resampling.LANCZOS)
+
+                    elif self.toolbox.resize_widget.rb_predefined.isChecked():
+                        width, height = self.predefined_size(self.toolbox.resize_widget.comb_presize.currentText())
+                        image_resized = image.resize((width, height), Image.Resampling.LANCZOS)
+
+                    if self.toolbox.rename_widget.chb_add_count.isChecked():
+                        image_resized.save(model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
+                    else:
+                        image_resized.save(model["output_folder"] + data["base_name"] + data["extension"])
                 else:
-                    image.save(model["output_folder"] + new_name + extension)  # Rename and save
+                    if self.toolbox.rename_widget.chb_add_count.isChecked():
+                        image.save(model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
+                    else:
+                        image.save(model["output_folder"] + data["base_name"] + data["extension"])
+
+                index += 1
 
     def process_select_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")
