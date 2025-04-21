@@ -528,5 +528,53 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>rb_remove_string</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>le_remove_string</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>69</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>208</x>
+     <y>134</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb_remove_first</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>le_remove_first</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>70</x>
+     <y>164</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>143</x>
+     <y>164</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb_remove_last</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>le_remove_last</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>71</x>
+     <y>194</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>194</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

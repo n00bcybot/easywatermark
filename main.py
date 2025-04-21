@@ -118,14 +118,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             new_name = name.replace(str(string), "")
             return new_name
     def remove_first(self, name, number):
-        if number < len(name):
-            new_name = name[number:len(name)]
-            return new_name
-
-    def remove_last(self, name,number):
-        if number < len(name):
-            new_name = name[0:number]
-            return new_name
+        if number:
+            if int(number) < len(name):
+                new_name = name[int(number):]
+                return str(new_name)
+        else:
+            return name
+    def remove_last(self, name, number):
+        if number:
+            if int(number) < len(name):
+                new_name = name[:-int(number)]
+                return str(new_name)
+        else:
+            return name
 
     def set_image_data(self, image_path):
         data["directory"], data["file_name"] = os.path.split(image_path)
@@ -142,7 +147,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         data["suffix"] = self.toolbox.rename_widget.le_add_suffix.text()
         count = self.get_digit(self.toolbox.rename_widget.comb_digit.currentText())
         data["counter"] = f"{index:0{count}}"
-        print(data["counter"])
+        print(data)
         data["delimiter"] = self.set_delimiter(self.toolbox.rename_widget.comb_delimiter.currentText())
 
     def set_preview(self):
@@ -160,14 +165,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dm = data["delimiter"]
 
         if self.toolbox.rename_widget.rb_keep.isChecked():
+            data["new_name"] = data["base_name"]
             if self.toolbox.rename_widget.rb_remove_string.isChecked():
-                data["base_name"] = self.remove_string(data["base_name"], self.toolbox.rename_widget.le_remove_string.text())
+                data["new_name"] = self.remove_string(data["base_name"], str(self.toolbox.rename_widget.le_remove_string.text()))
             elif self.toolbox.rename_widget.rb_remove_first.isChecked():
-                data["base_name"] = self.remove_first(data["base_name"], int(self.toolbox.rename_widget.le_remove_first.text()))
+                data["new_name"] = self.remove_first(data["base_name"], self.toolbox.rename_widget.le_remove_first.text())
             elif self.toolbox.rename_widget.rb_remove_last.isChecked():
-                data["base_name"] = self.remove_last(data["base_name"], int(self.toolbox.rename_widget.le_remove_last.text()))
+                data["new_name"] = self.remove_last(data["base_name"], self.toolbox.rename_widget.le_remove_last.text())
 
-            vars_list = [data["prefix"], data["base_name"], data["suffix"], data["counter"]]
+            if data["new_name"] == "":
+                vars_list = [data["prefix"], data["base_name"], data["suffix"], data["counter"]]
+            else:
+                vars_list = [data["prefix"], data["new_name"], data["suffix"], data["counter"]]
 
         elif self.toolbox.rename_widget.rb_change.isChecked():
             vars_list = [data["prefix"], data["replace_name"], data["suffix"], data["counter"]]

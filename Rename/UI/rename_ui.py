@@ -271,6 +271,9 @@ class Ui_Rename(object):
         self.rb_change.toggled.connect(self.fr_new_name.setEnabled)
         self.rb_keep.toggled.connect(self.fr_keep_name.setEnabled)
         self.chb_add_count.clicked["bool"].connect(self.comb_digit.setEnabled)
+        self.rb_remove_string.toggled.connect(self.le_remove_string.setEnabled)
+        self.rb_remove_first.toggled.connect(self.le_remove_first.setEnabled)
+        self.rb_remove_last.toggled.connect(self.le_remove_last.setEnabled)
 
         QMetaObject.connectSlotsByName(Rename)
     # setupUi

@@ -53,5 +53,6 @@ data = {
     "prefix": "",
     "suffix": "",
     "delimiter": "",
-    "counter": ""
+    "counter": "",
+    "new_name": ""
 }
