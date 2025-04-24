@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (QMainWindow, QApplication, QLabel, QWidget, QVBox
 
 from ToolBox.UI.toolbox_ui import Ui_wg_toolbox
 from Resize.resize import ResizeWidget
-from Convert.convert import ConvertWidget
+from Converter.converter import ConverterWidget
 from Rename.rename import RenameWidget
 
 
@@ -28,9 +28,9 @@ class ToolBoxWidget(QWidget, Ui_wg_toolbox, ):
         self.resize_widget.fr_percent.setDisabled(True)
         self.resize_widget.fr_predefined.setDisabled(True)
 
-        # Import Convert widget
+        # Import Converter widget
         # --------------------------------------------------------------------------------------------------
-        self.convert_widget = ConvertWidget()
+        self.convert_widget = ConverterWidget()
         self.page_4.layout().addWidget(self.convert_widget)
 
         # Import Rename widget

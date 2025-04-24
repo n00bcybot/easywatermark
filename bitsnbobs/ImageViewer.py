@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (QMainWindow, QApplication, QFileDialog, QListWidg
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QSize, Qt
 
-from BitsnBobs.ImageViewer_ui import Ui_MainWindow
+from bitsnbobs.ImageViewer_ui import Ui_MainWindow
 
 
 class ImageWindow(QMainWindow, Ui_MainWindow):
