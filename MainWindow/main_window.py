@@ -21,6 +21,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
 
+
         # def update_statusbar(self, message):
         #     self.statusbar.showMessage(message)
 
