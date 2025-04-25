@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (QMainWindow, QApplication, QFileDialog, QMessageB
 from PySide6.QtCore import Qt
 
 from model.model import *
-from MainWindow.UI.main_window_ui import Ui_MainWindow
+from PySide6.QtCore import Signal, Slot
 from ToolBox.toolbox import ToolBoxWidget
 from ImageViewer.image_viewer import ImageViewer
 from ImageDisplay.image_display import ImageDisplay
@@ -17,10 +17,12 @@ from MainWindow.UI.main_window_ui import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
+
+    signal_add_images = Signal()
+
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-
 
         # def update_statusbar(self, message):
         #     self.statusbar.showMessage(message)
@@ -35,6 +37,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # --------------------------------------------------------------------------------------------------
         self.image_display = ImageDisplay()
         self.layout_display.layout().addWidget(self.image_display)
+        self.action_add.triggered.connect(self.on_add_images)
+
         # --------------------------------------------------------------------------------------------------
 
         # Import Flicker
@@ -53,3 +57,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # --------------------------------------------------------------------------------------------------
         self.process_dialog = ProcessDialog()
         # --------------------------------------------------------------------------------------------------
+
+    @Slot()
+    def on_add_images(self):
+        self.signal_add_images.emit()

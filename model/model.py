@@ -1,9 +1,11 @@
 from PySide6.QtGui import QPixmap
+from PySide6.QtCore import QSize
 
 model = {
     "image_path": [],
     "pixmap_original": [],
-    "output_folder": ""
+    "output_folder": "",
+    "initial_label_display_size": QSize
 }
 
 process = {
