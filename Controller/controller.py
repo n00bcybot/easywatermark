@@ -15,5 +15,7 @@ class Controller(QObject):
     # Redirect indexChanged signal to update MainWindow status bar
     @Slot(str)
     def receive_converter_indexChanged(self, message: str):
-        # self.main_window.update_statusbar(message)
+        self.main_window.statusbar.setText(message)
+
         data["extension"] = message
+
