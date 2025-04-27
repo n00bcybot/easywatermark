@@ -5,7 +5,8 @@ model = {
     "image_path": [],
     "pixmap_original": [],
     "output_folder": "",
-    "initial_label_display_size": QSize
+    "initial_label_display_size": QSize,
+    "current_image_path": ""
 }
 
 process = {

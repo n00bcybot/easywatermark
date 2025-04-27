@@ -17,10 +17,11 @@ class ConverterWidget(QWidget, Ui_wg_convert):
 
         self.cb_convert.currentIndexChanged.connect(self.on_index_change)
 
-    # Emit signal when different item is selected in teh combo box
+    # Emit signal when different item is selected in the combobox
     @Slot()
     def on_index_change(self):
-        self.indexChanged.emit(self.cb_convert.currentText())
+        extension = self.cb_convert.currentText()
+        self.indexChanged.emit(extension)
 
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)

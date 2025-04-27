@@ -7,16 +7,9 @@ from ImageViewer.UI.image_viewer_ui import Ui_wg_image_viewer
 
 class ImageViewer(QWidget, Ui_wg_image_viewer):
 
-    signal_set_statusbar = Signal(str)
-    signal_display_pixmap = Signal(QPixmap)
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Load UI elements
-
-        self.current_path = ""
-        self.label_display_size = None
-
 
     def add_image(self):
         files, _ = QFileDialog.getOpenFileNames(
@@ -36,45 +29,11 @@ class ImageViewer(QWidget, Ui_wg_image_viewer):
                 model["image_path"].append(file_path)
                 model["pixmap_original"].append(pixmap)
                 self.list_viewer.addItem(item)
-
-        # Set current path to the first image in the list. At this point self.current path is still empty,
-        # unless image is clicked in the picker
-        self.current_path = model["image_path"][0]
-
-        # Display the first image in the list upon adding the images
-        scaled_pixmap = model["pixmap_original"][0] #.scaled(model["initial_label_display_size"], Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        # Display the first image in the list upon adding images
-        self.emit_display_image(scaled_pixmap)
-        # Show image path in the statusbar
-        self.emit_status_bar(model["image_path"][0])
-
-    @Slot()
-    def emit_status_bar(self, message):
-        self.signal_set_statusbar.emit(message)
-
-    @Slot(QPixmap)
-    def emit_display_image(self, pixmap):
-        self.signal_display_pixmap.emit(pixmap)
-
+            item.setSelected(True)
 
     def clear_image_picker(self):
         self.list_viewer.clear()  # Clear image viewer
         model["image_path"].clear()  # Clear the paths list as well
-
-    def show_image_path(self, item):
-        # Retrieve user data, previously acquired in add_images
-        self.current_path = item.data(Qt.UserRole)
-        self.statusbar.showMessage(self.current_path)
-
-
-    def display_image(self):
-
-        for path, pixmap in zip(model["image_path"], model["pixmap_original"]):
-            if path == self.current_path:
-                # Scale to label size
-                scaled_pixmap = pixmap.scaled(self.image_display.label_image_display.size(),
-                                              Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                self.image_display.label_image_display.setPixmap(scaled_pixmap)
 
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)

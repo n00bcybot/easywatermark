@@ -1,5 +1,11 @@
 import os
 from model.model import *
+from PySide6.QtCore import Qt
+
+
+def scale_pixmap(size, pixmap):
+    scaled_pixmap = pixmap.scaled(size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+    return scaled_pixmap
 
 
 def image_format(self, _format):

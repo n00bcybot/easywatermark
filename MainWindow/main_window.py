@@ -18,14 +18,9 @@ from MainWindow.UI.main_window_ui import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
-    signal_add_images = Signal()
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-
-        # def update_statusbar(self, message):
-        #     self.statusbar.showMessage(message)
 
         # Import ImageDisplay
         # --------------------------------------------------------------------------------------------------
@@ -37,7 +32,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # --------------------------------------------------------------------------------------------------
         self.image_display = ImageDisplay()
         self.layout_display.layout().addWidget(self.image_display)
-        self.action_add.triggered.connect(self.on_add_images)
+
 
         # --------------------------------------------------------------------------------------------------
 
@@ -58,6 +53,4 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.process_dialog = ProcessDialog()
         # --------------------------------------------------------------------------------------------------
 
-    @Slot()
-    def on_add_images(self):
-        self.signal_add_images.emit()
+

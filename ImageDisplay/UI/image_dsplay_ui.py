@@ -27,13 +27,18 @@ class Ui_layout_image_display(object):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.label_image_display = QLabel(layout_image_display)
-        self.label_image_display.setObjectName(u"label_image_display")
-        self.label_image_display.setStyleSheet(u"")
-        self.label_image_display.setScaledContents(False)
-        self.label_image_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.lb_display = QLabel(layout_image_display)
+        self.lb_display.setObjectName(u"lb_display")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lb_display.sizePolicy().hasHeightForWidth())
+        self.lb_display.setSizePolicy(sizePolicy)
+        self.lb_display.setStyleSheet(u"")
+        self.lb_display.setScaledContents(False)
+        self.lb_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.gridLayout.addWidget(self.label_image_display, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.lb_display, 0, 0, 1, 1)
 
 
         self.retranslateUi(layout_image_display)
@@ -43,6 +48,6 @@ class Ui_layout_image_display(object):
 
     def retranslateUi(self, layout_image_display):
         layout_image_display.setWindowTitle(QCoreApplication.translate("layout_image_display", u"Form", None))
-        self.label_image_display.setText("")
+        self.lb_display.setText("")
     # retranslateUi
 
