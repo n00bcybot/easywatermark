@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 
 
 def scale_pixmap(size, pixmap):
-    scaled_pixmap = pixmap.scaled(size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+    scaled_pixmap = pixmap.scaled(size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
     return scaled_pixmap
 
 

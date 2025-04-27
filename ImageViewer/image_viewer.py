@@ -28,7 +28,7 @@ class ImageViewer(QWidget, Ui_wg_image_viewer):
             # Create list item and add the pixmap to it
             item = QListWidgetItem(pixmap, "")
             # Use UserRole to store the data (the file path) and retrieve it later
-            item.setData(Qt.UserRole, file_path)
+            item.setData(Qt.ItemDataRole.UserRole, file_path)
             # Check if the file is already in the list:
             if file_path not in model["image_path"]:
                 model["image_path"].append(file_path)
