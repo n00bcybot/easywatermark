@@ -64,19 +64,21 @@ class Controller(QObject):
             model["current_image_path"] = path
 
     def show_next_image(self):
-        if int(model["image_path"].index(self.current_path)) < len(model["image_path"]) - 1:
-            self.current_path = model["image_path"][model["image_path"].index(self.current_path) + 1]
-            model["list_viewer_items"][model["image_path"].index(self.current_path)].setSelected(True)
+        current_list = model["image_path"]
+        if int(current_list.index(self.current_path)) < len(current_list) - 1:
+            self.current_path = current_list[current_list.index(self.current_path) + 1]
+            model["list_viewer_items"][current_list.index(self.current_path)].setSelected(True)
         else:
-            self.current_path = model["image_path"][0]
+            self.current_path = current_list[0]
 
         self.display_image(self.current_path)
 
     def show_previous_image(self):
-        if int(model["image_path"].index(self.current_path)) > 0:
-            self.current_path = model["image_path"][model["image_path"].index(self.current_path) - 1]
-            model["list_viewer_items"][model["image_path"].index(self.current_path)].setSelected(True)
+        current_list = model["image_path"]
+        if int(current_list.index(self.current_path)) > 0:
+            self.current_path = current_list[current_list.index(self.current_path) - 1]
+            model["list_viewer_items"][current_list.index(self.current_path)].setSelected(True)
         else:
-            self.current_path = model["image_path"][len(model["image_path"]) - 1]
+            self.current_path = current_list[len(current_list) - 1]
 
         self.display_image(self.current_path)

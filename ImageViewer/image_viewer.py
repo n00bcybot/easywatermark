@@ -37,12 +37,18 @@ class ImageViewer(QWidget, Ui_wg_image_viewer):
             items.append(item)
         # Select the first item in the list
         items[0].setSelected(True)
-        model["list_viewer_items"] = items
+        for i in items:
+            if i not in model["list_viewer_items"]:
+                model["list_viewer_items"].append(i)
+            else:
+                model["list_viewer_items"] = items
+
 
 
     def clear_image_picker(self):
         self.list_viewer.clear()  # Clear image viewer
         model["image_path"].clear()  # Clear the paths list as well
+        model["list_viewer_items"].clear()
 
     @Slot()
     def display_clicked_item(self):

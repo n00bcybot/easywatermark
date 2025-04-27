@@ -8,9 +8,9 @@ from Flicker.UI.flicker_ui import Ui_wg_flicker
 
 
 class FlickerWidget(QWidget, Ui_wg_flicker):
-
     sg_display_next = Signal()
     sg_display_previous = Signal()
+
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Load UI elements
@@ -21,10 +21,10 @@ class FlickerWidget(QWidget, Ui_wg_flicker):
     @Slot()
     def on_next_clicked(self):
         self.sg_display_next.emit()
+
     @Slot()
     def on_previous_clicked(self):
         self.sg_display_previous.emit()
-
 
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)
