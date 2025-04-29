@@ -4,6 +4,7 @@ from PIL import Image
 from PySide6.QtWidgets import (QMainWindow, QApplication, QFileDialog, QMessageBox, QListWidgetItem)
 
 from PySide6.QtCore import Qt
+from functions import static
 
 from model.model import *
 from PySide6.QtCore import Signal, Slot
@@ -22,6 +23,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
 
+        self.current_image_path = ""
+
         # Import ImageDisplay
         # --------------------------------------------------------------------------------------------------
         self.image_viewer = ImageViewer()
@@ -32,7 +35,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # --------------------------------------------------------------------------------------------------
         self.image_display = ImageDisplay()
         self.layout_display.layout().addWidget(self.image_display)
-
 
         # --------------------------------------------------------------------------------------------------
 
@@ -53,4 +55,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.process_dialog = ProcessDialog()
         # --------------------------------------------------------------------------------------------------
 
-
+    def set_statusbar(self, message):
+        self.statusbar.showMessage(message)

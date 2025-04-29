@@ -12,13 +12,21 @@ class ImageDisplay(QWidget, Ui_layout_image_display):
         super().__init__()
         self.setupUi(self)  # Load UI elements
 
+        self.image_paths = model["image_paths"]
+        self.current_path = ""
+
+    def display_image(self, path):
+        model["current_image_paths"] = path
+        self.current_path = path
+        model["current_pixmap"] = static.make_pixmap(self.current_path)
+        scaled_pixmap = static.scale_from_pixmap(self.lb_display.size(), model["current_pixmap"])
+        self.lb_display.setPixmap(scaled_pixmap)
+
     def resizeEvent(self, event):
-        # Scale the pixmap to label size when the UI is resized and keep aspect ratio
-        for path, pixmap in zip(model["image_path"], model["pixmap_original"]):
-            if path == model["current_image_path"]:
-                label_size = self.lb_display.size()  # Get current label size
-                scaled_pixmap = static.scale_pixmap(label_size, pixmap)
-                # Swap the pixmap with its scaled version
+        for path in model["image_paths"]:
+            if path == self.current_path:
+                # Display the first image in the list upon adding the images
+                scaled_pixmap = static.scale_from_pixmap(self.lb_display.size(), model["current_pixmap"])
                 self.lb_display.setPixmap(scaled_pixmap)
 
         super().resizeEvent(event)

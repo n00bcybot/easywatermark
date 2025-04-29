@@ -35,6 +35,8 @@ class Ui_MainWindow(object):
         self.action_close.setObjectName(u"action_close")
         self.action_process = QAction(MainWindow)
         self.action_process.setObjectName(u"action_process")
+        self.action_remove = QAction(MainWindow)
+        self.action_remove.setObjectName(u"action_remove")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_4 = QGridLayout(self.centralwidget)
@@ -120,6 +122,7 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuFIle.menuAction())
         self.menuFIle.addAction(self.action_add)
+        self.menuFIle.addAction(self.action_remove)
         self.menuFIle.addAction(self.action_clear)
         self.menuFIle.addSeparator()
         self.menuFIle.addAction(self.action_process)
@@ -135,9 +138,10 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.action_add.setText(QCoreApplication.translate("MainWindow", u"Add Image", None))
-        self.action_clear.setText(QCoreApplication.translate("MainWindow", u"Clear Image", None))
+        self.action_clear.setText(QCoreApplication.translate("MainWindow", u"Clear Image Browser", None))
         self.action_close.setText(QCoreApplication.translate("MainWindow", u"Close", None))
         self.action_process.setText(QCoreApplication.translate("MainWindow", u"Process", None))
+        self.action_remove.setText(QCoreApplication.translate("MainWindow", u"Remove Image", None))
         self.menuFIle.setTitle(QCoreApplication.translate("MainWindow", u"FIle", None))
     # retranslateUi
 

@@ -1,14 +1,29 @@
 import os
 from model.model import *
+from PySide6.QtWidgets import QListWidgetItem
 from PySide6.QtCore import Qt
 
 
-def scale_pixmap(size, pixmap):
+def make_pixmap(path):
+    pixmap = QPixmap(path)
+    return pixmap
+
+
+def scale_pixmap(size, path):
+    pixmap = make_pixmap(path)
     scaled_pixmap = pixmap.scaled(size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
     return scaled_pixmap
 
+def scale_from_pixmap(size, pixmap):
+    scaled_pixmap = pixmap.scaled(size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+    return scaled_pixmap
 
-def image_format(self, _format):
+def list_widget_item(image_path):
+    item = QListWidgetItem(QPixmap(image_path), "")
+    return item
+
+
+def image_format(_format):
     match _format:
         case "JPG":
             return ".jpg"
@@ -18,7 +33,7 @@ def image_format(self, _format):
             return ".tiff"
 
 
-def set_delimiter(self, text):
+def set_delimiter(text):
     match text:
         case ". (dot)":
             return "."
@@ -28,7 +43,7 @@ def set_delimiter(self, text):
             return "_"
 
 
-def get_digit(self, selection):
+def get_digit(selection):
     match selection:
         case "1 digit":
             return 1
@@ -44,13 +59,13 @@ def get_digit(self, selection):
             return 6
 
 
-def remove_string(self, name, string):
+def remove_string(name, string):
     if str(string) in name:
         new_name = name.replace(str(string), "")
         return new_name
 
 
-def remove_first(self, name, number):
+def remove_first(name, number):
     if number:
         if int(number) < len(name):
             new_name = name[int(number):]
@@ -59,7 +74,7 @@ def remove_first(self, name, number):
         return name
 
 
-def remove_last(self, name, number):
+def remove_last(name, number):
     if number:
         if int(number) < len(name):
             new_name = name[:-int(number)]
@@ -68,7 +83,7 @@ def remove_last(self, name, number):
         return name
 
 
-def predefined_size(self, selection):
+def predefined_size(selection):
     match selection:
         case "1920 x 1080 (Full HD)":
             width = 1920
@@ -80,7 +95,7 @@ def predefined_size(self, selection):
             return width, height
 
 
-def set_image_data(self, image_path):
+def set_image_data(image_path):
     data["directory"], data["file_name"] = os.path.split(image_path)
     data["path_no_ext"], data["extension"] = os.path.splitext(image_path)
     data["base_name"] = data["file_name"].replace(data["extension"], "")

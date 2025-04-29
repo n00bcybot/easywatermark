@@ -160,6 +160,7 @@
      <string>FIle</string>
     </property>
     <addaction name="action_add"/>
+    <addaction name="action_remove"/>
     <addaction name="action_clear"/>
     <addaction name="separator"/>
     <addaction name="action_process"/>
@@ -176,7 +177,7 @@
   </action>
   <action name="action_clear">
    <property name="text">
-    <string>Clear Image</string>
+    <string>Clear Image Browser</string>
    </property>
   </action>
   <action name="action_close">
@@ -187,6 +188,11 @@
   <action name="action_process">
    <property name="text">
     <string>Process</string>
+   </property>
+  </action>
+  <action name="action_remove">
+   <property name="text">
+    <string>Remove Image</string>
    </property>
   </action>
  </widget>

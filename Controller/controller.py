@@ -1,3 +1,4 @@
+from PySide6.QtWidgets import QFileDialog
 from PySide6.QtCore import QObject, Slot, Signal, QSize
 from PySide6.QtGui import Qt
 from model.model import *
@@ -5,6 +6,7 @@ from functions import static
 
 
 class Controller(QObject):
+    sg_statusbar_msg = Signal(str)
 
     def __init__(self, main_window):
         super().__init__()
@@ -18,67 +20,73 @@ class Controller(QObject):
         self.flicker = self.main_window.image_flicker
 
         self.main_window.action_add.triggered.connect(self.add_images)
-        self.main_window.action_clear.triggered.connect(self.image_viewer.clear_image_picker)
+        self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
 
-        self.flicker.bt_next.clicked.connect(self.show_next_image)
-        self.flicker.bt_previous.clicked.connect(self.show_previous_image)
+        self.image_viewer.sg_selected_item.connect(self.on_item_clicked)
 
-        self.image_viewer.list_viewer.itemClicked.connect(self.on_item_clicked)
+        self.flicker.sg_display_next.connect(self.show_next_image)
+        self.flicker.sg_display_previous.connect(self.show_previous_image)
+
+    # Add images to the image viewer
+    def add_images(self):
+        files, _ = QFileDialog.getOpenFileNames(
+            self.main_window, "Select Images", "", "Images (*.png *.jpg *.jpeg *.bmp *.gif)"
+        )
+        for file_path in files:
+            item = static.list_widget_item(file_path)  # Create list widget item from images on disk
+            pixmap = static.make_pixmap(file_path)
+            if file_path not in model["image_paths"]:  # Check if the file is already in the list:
+                model["image_paths"].append(file_path)  # Create/update image list
+            if item not in model["list_viewer_items"]:
+                model["list_viewer_items"].append(item)  # Create/update list widget items list
+
+        self.add_list_viewer_item()  # Add all items in the list widget items list to the viewer
+        self.current_path = model["current_image_path"] = model["image_paths"][0]  # Set current image path
+        model["current_pixmap"] = static.make_pixmap(self.current_path)  # Create pixmap from initial image
+        self.image_display.display_image(self.current_path)
+        self.main_window.set_statusbar(self.current_path)  # Show image path in the statusbar
+
+    def add_list_viewer_item(self):
+        for item in model["list_viewer_items"]:
+            self.image_viewer.list_viewer.addItem(item)
+
+    def rebuild_viewer(self):
+        model["list_viewer_items"].clear()
+        self.main_window.rebuild_image_viewer()
+
+    def add_items(self):
+        self.image_viewer.add_list_viewer_item()
+
+    def clear_viewer(self):
+        self.image_viewer.list_viewer.clear()
 
     @Slot(int)
     def on_item_clicked(self, item):
-        index = model["list_viewer_items"].index(item)
-        path = model["image_path"][index]
+        path = model["image_paths"][model["list_viewer_items"].index(item)]
+        self.image_display.display_image(path)
+        self.main_window.set_statusbar(path)
 
-        self.display_image(path)
-
-    def add_images(self):
+    def send_list_widget_item(self, item):
         # Add images
-        self.image_viewer.add_image()
+        self.image_viewer.add_list_viewer_item(item)
 
-        self.current_path = model["image_path"][0]
-        model["current_image_path"] = self.current_path
-
-        self.main_window.statusbar.showMessage(model["image_path"][0])
-        # Display the first image in the list upon adding the images
-        scaled_pixmap = static.scale_pixmap(self.image_display.lb_display.size(), model["pixmap_original"][0])
-        self.image_display.lb_display.setPixmap(scaled_pixmap)
-
-    # def display_image(self):
-    #
-    #     for path, pixmap in zip(model["image_path"], model["pixmap_original"]):
-    #         if path == self.current_path:
-    #             # Scale to label size
-    #             scaled_pixmap = static.scale_pixmap(self.image_display.lb_display.size(), pixmap)
-    #             self.image_display.lb_display.setPixmap(scaled_pixmap)
-    #             self.main_window.statusbar.showMessage(path)
-    #             model["current_image_path"] = path
-
-    def display_image(self, path):
-
-        if path in model["image_path"]:
-            pixmap = model["pixmap_original"][model["image_path"].index(path)]
-            scaled_pixmap = static.scale_pixmap(self.image_display.lb_display.size(), pixmap)
-            self.image_display.lb_display.setPixmap(scaled_pixmap)
-            self.main_window.statusbar.showMessage(path)
-            model["current_image_path"] = path
+    def get_current_path(self, path):
+        self.current_path = path
 
     def show_next_image(self):
-        current_list = model["image_path"]
+        current_list = model["image_paths"]
         if int(current_list.index(self.current_path)) < len(current_list) - 1:
             self.current_path = current_list[current_list.index(self.current_path) + 1]
-            model["list_viewer_items"][current_list.index(self.current_path)].setSelected(True)
+            # model["list_viewer_items"][current_list.index(self.current_path)].setSelected(True)
         else:
             self.current_path = current_list[0]
-
-        self.display_image(self.current_path)
+        self.image_display.display_image(self.current_path)
 
     def show_previous_image(self):
-        current_list = model["image_path"]
+        current_list = model["image_paths"]
         if int(current_list.index(self.current_path)) > 0:
             self.current_path = current_list[current_list.index(self.current_path) - 1]
-            model["list_viewer_items"][current_list.index(self.current_path)].setSelected(True)
+            # model["list_viewer_items"][current_list.index(self.current_path)].setSelected(True)
         else:
             self.current_path = current_list[len(current_list) - 1]
-
-        self.display_image(self.current_path)
+        self.image_display.display_image(self.current_path)

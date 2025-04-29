@@ -1,12 +1,14 @@
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QSize
+from PySide6.QtWidgets import QListWidgetItem
 
 model = {
-    "image_path": [],
+    "image_paths": [],
     "pixmap_original": [],
     "output_folder": "",
     "initial_label_display_size": QSize,
     "current_image_path": "",
+    "current_pixmap": QPixmap,
     "list_viewer_items": []
 }
 
@@ -59,4 +61,11 @@ data = {
     "delimiter": "",
     "counter": "",
     "new_name": ""
+}
+
+images = {
+        "name": "",
+        "path": "",
+        "pixmap": QPixmap,
+        "list_widget_item": QListWidgetItem
 }
