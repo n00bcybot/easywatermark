@@ -39,6 +39,7 @@ class Ui_MainWindow(object):
         self.action_remove.setObjectName(u"action_remove")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
+        self.centralwidget.setStyleSheet(u"")
         self.gridLayout_4 = QGridLayout(self.centralwidget)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.sp_main = QSplitter(self.centralwidget)
@@ -92,6 +93,7 @@ class Ui_MainWindow(object):
         self.layout_display.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_3 = QGridLayout(self.layout_display)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
 
         self.verticalLayout.addWidget(self.layout_display)
 

@@ -6,12 +6,12 @@ from functions import static
 
 
 class Controller(QObject):
-    sg_statusbar_msg = Signal(str)
 
     def __init__(self, main_window):
         super().__init__()
 
         self.current_path = ""
+        # self.current_text = ""
         self.list_widget_item = QListWidgetItem
 
         self.main_window = main_window  # Import MainWindow
@@ -19,6 +19,8 @@ class Controller(QObject):
         self.image_viewer = self.main_window.image_viewer
         self.image_display = self.main_window.image_display
         self.flicker = self.main_window.image_flicker
+        self.rename = self.main_window.toolbox.rename_widget
+        self.resize = self.main_window.toolbox.resize_widget
 
         self.main_window.action_add.triggered.connect(self.add_images)
         self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
@@ -29,6 +31,16 @@ class Controller(QObject):
 
         self.flicker.sg_display_next.connect(self.show_next_image)
         self.flicker.sg_display_previous.connect(self.show_previous_image)
+
+        self.rename.receive_extension(self.converter.cb_convert.currentText())
+
+        self.converter.sg_indexChanged.connect(self.extension_changed)
+
+
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # Adding, removing, displaying images
+    # ------------------------------------------------------------------------------------------------------------------
 
     # Add images to the image viewer
     def add_images(self):
@@ -100,3 +112,14 @@ class Controller(QObject):
             self.current_path = current_list[len(current_list) - 1]
         self.main_window.set_statusbar(self.current_path)
         self.image_display.display_image(self.current_path)
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # Rename
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def extension_changed(self, text):
+        self.rename.receive_extension(text)
+
+    @Slot(int)
+    def set_image_data(self, index):
+        self.rename.set_rename_data(index)

@@ -26,10 +26,7 @@ process = {
             "width": int,
             "height": int
         },
-        "percent": {
-            "width": int,
-            "height": int
-        }
+        "percent": int
 
     },
     "rename": {

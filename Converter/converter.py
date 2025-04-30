@@ -9,7 +9,7 @@ from model.model import *
 class ConverterWidget(QWidget, Ui_wg_convert):
 
     # Create the signal
-    indexChanged = Signal(str)
+    sg_indexChanged = Signal(str)
 
     def __init__(self):
         super().__init__()
@@ -21,7 +21,10 @@ class ConverterWidget(QWidget, Ui_wg_convert):
     @Slot()
     def on_index_change(self):
         extension = self.cb_convert.currentText()
-        self.indexChanged.emit(extension)
+        self.sg_indexChanged.emit(extension)
+
+
+
 
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)

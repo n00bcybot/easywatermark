@@ -14,9 +14,11 @@ def scale_pixmap(size, path):
     scaled_pixmap = pixmap.scaled(size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
     return scaled_pixmap
 
+
 def scale_from_pixmap(size, pixmap):
     scaled_pixmap = pixmap.scaled(size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
     return scaled_pixmap
+
 
 def list_widget_item(image_path):
     item = QListWidgetItem(QPixmap(image_path), "")
@@ -99,3 +101,10 @@ def set_image_data(image_path):
     data["directory"], data["file_name"] = os.path.split(image_path)
     data["path_no_ext"], data["extension"] = os.path.splitext(image_path)
     data["base_name"] = data["file_name"].replace(data["extension"], "")
+
+
+def reduce_by_percent(percent, width, height):
+    reduce_by = (100 - percent) / 100
+    new_width = width * reduce_by
+    new_height = height * reduce_by
+    return new_width, new_height
