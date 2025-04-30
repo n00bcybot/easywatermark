@@ -12,6 +12,7 @@ class Controller(QObject):
         super().__init__()
 
         self.current_path = ""
+        self.list_widget_item = QListWidgetItem
 
         self.main_window = main_window  # Import MainWindow
         self.converter = self.main_window.toolbox.convert_widget  # Import any other widget
@@ -21,8 +22,10 @@ class Controller(QObject):
 
         self.main_window.action_add.triggered.connect(self.add_images)
         self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
+        self.main_window.action_remove.triggered.connect(self.rebuild_viewer)
 
         self.image_viewer.sg_selected_item.connect(self.on_item_clicked)
+        self.image_viewer.sg_selected_item.connect(self.receive_item)
 
         self.flicker.sg_display_next.connect(self.show_next_image)
         self.flicker.sg_display_previous.connect(self.show_previous_image)
@@ -34,10 +37,8 @@ class Controller(QObject):
         )
         for file_path in files:
             item = static.list_widget_item(file_path)  # Create list widget item from images on disk
-            pixmap = static.make_pixmap(file_path)
             if file_path not in model["image_paths"]:  # Check if the file is already in the list:
                 model["image_paths"].append(file_path)  # Create/update image list
-            if item not in model["list_viewer_items"]:
                 model["list_viewer_items"].append(item)  # Create/update list widget items list
 
         self.add_list_viewer_item()  # Add all items in the list widget items list to the viewer
@@ -50,9 +51,16 @@ class Controller(QObject):
         for item in model["list_viewer_items"]:
             self.image_viewer.list_viewer.addItem(item)
 
+    def receive_item(self, item):
+        self.list_widget_item = item
+
     def rebuild_viewer(self):
-        model["list_viewer_items"].clear()
-        self.main_window.rebuild_image_viewer()
+        for item in model["list_viewer_items"]:
+            if item.isSelected():
+                index = model["list_viewer_items"].index(item)
+                self.image_viewer.list_viewer.takeItem(index)
+                model["list_viewer_items"].remove(item)
+                model["image_paths"].remove(model["image_paths"][index])
 
     def add_items(self):
         self.image_viewer.add_list_viewer_item()
@@ -80,6 +88,7 @@ class Controller(QObject):
             # model["list_viewer_items"][current_list.index(self.current_path)].setSelected(True)
         else:
             self.current_path = current_list[0]
+        self.main_window.set_statusbar(self.current_path)
         self.image_display.display_image(self.current_path)
 
     def show_previous_image(self):
@@ -89,4 +98,5 @@ class Controller(QObject):
             # model["list_viewer_items"][current_list.index(self.current_path)].setSelected(True)
         else:
             self.current_path = current_list[len(current_list) - 1]
+        self.main_window.set_statusbar(self.current_path)
         self.image_display.display_image(self.current_path)
