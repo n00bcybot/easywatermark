@@ -1,11 +1,12 @@
-from PySide6.QtWidgets import QFileDialog
+from PySide6.QtWidgets import QFileDialog, QMessageBox, QWidget
 from PySide6.QtCore import QObject, Slot, Signal, QSize
 from PySide6.QtGui import Qt
+from PIL import Image
 from model.model import *
 from functions import static
 
 
-class Controller(QObject):
+class Controller(QWidget, QObject):
 
     def __init__(self, main_window):
         super().__init__()
@@ -21,10 +22,12 @@ class Controller(QObject):
         self.flicker = self.main_window.image_flicker
         self.rename = self.main_window.toolbox.rename_widget
         self.resize = self.main_window.toolbox.resize_widget
+        self.process = self.main_window.process
 
         self.main_window.action_add.triggered.connect(self.add_images)
         self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
         self.main_window.action_remove.triggered.connect(self.rebuild_viewer)
+        self.main_window.action_process.triggered.connect(self.process_show_dialog)
 
         self.image_viewer.sg_selected_item.connect(self.on_item_clicked)
         self.image_viewer.sg_selected_item.connect(self.receive_item)
@@ -35,6 +38,9 @@ class Controller(QObject):
         self.rename.receive_extension(self.converter.cb_convert.currentText())
 
         self.converter.sg_indexChanged.connect(self.extension_changed)
+
+        self.process.pb_select_folder.clicked.connect(self.process_select_folder)
+        self.process.pb_process.clicked.connect(self.process_batch)
 
 
 
@@ -123,3 +129,63 @@ class Controller(QObject):
     @Slot(int)
     def set_image_data(self, index):
         self.rename.set_rename_data(index)
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # Process
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def process_show_dialog(self):
+        self.process.lw_image_list.clear()
+        # Add the images from image viewer (model["image_path"])
+        for image in model["image_paths"]:
+            self.process.lw_image_list.addItem(image)
+        # Use exec() instead of show() to block the main window until the dialog is closed
+        self.process.exec()
+    def process_batch(self):
+        if model["output_folder"] == "":
+            QMessageBox.information(self, "Output Folder Not Selected", "Please select an output folder!")
+        else:
+            index = 1
+            for image_path in model["image_paths"]:
+
+                static.set_image_data(image_path)
+                self.rename.set_rename_data(index)
+                # self.sg_sendIndex.emit(index)
+
+                # Create image object
+                image = Image.open(image_path)
+                image_resized = None
+
+                if self.resize.chb_resize.isChecked():
+                    if self.resize.rb_custom.isChecked():
+                        width = int(self.resize.le_width.text())
+                        height = int(self.resize.le_height.text())
+                        if self.resize.chb_keep_ratio.isChecked():
+                            new_width, new_height = static.keep_ratio(image.width, image.height, int(self.resize.le_width.text()), int(self.resize.le_height.text()))
+                            image_resized = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+                        else:
+                            image_resized = image.resize((width, height), Image.Resampling.LANCZOS)
+                    elif self.resize.rb_percent.isChecked():
+                        new_width, new_height = static.reduce_by_percent(int(self.resize.le_percent.text()), image.width, image.height)
+                        image_resized = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+
+                    elif self.resize.rb_predefined.isChecked():
+                        width, height = static.predefined_size(self.resize.comb_presize.currentText())
+                        image_resized = image.resize((width, height), Image.Resampling.LANCZOS)
+
+                    if self.rename.chb_add_count.isChecked():
+                        image_resized.save(
+                            model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
+                    else:
+                        image_resized.save(model["output_folder"] + data["base_name"] + data["extension"])
+                else:
+                    if self.rename.chb_add_count.isChecked():
+                        image.save(model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
+                    else:
+                        image.save(model["output_folder"] + data["base_name"] + data["extension"])
+
+                index += 1
+
+    def process_select_folder(self):
+        folder = QFileDialog.getExistingDirectory(self, "Select Folder")
+        model["output_folder"] = folder + "/"

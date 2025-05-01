@@ -107,4 +107,16 @@ def reduce_by_percent(percent, width, height):
     reduce_by = (100 - percent) / 100
     new_width = width * reduce_by
     new_height = height * reduce_by
-    return new_width, new_height
+    return round(new_width), round(new_height)
+
+
+def keep_ratio(image_width, image_height, new_width, new_height):
+    if image_width > image_height:
+        ratio = image_width / new_width
+        new_height = round(image_height / ratio)
+        return new_width, new_height
+
+    else:
+        ratio = image_height / new_height
+        new_width = round(image_width / ratio)
+        return new_width, new_height

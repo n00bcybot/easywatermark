@@ -52,7 +52,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Import Process dialog
         # --------------------------------------------------------------------------------------------------
-        self.process_dialog = ProcessDialog()
+        self.process = ProcessDialog()
         # --------------------------------------------------------------------------------------------------
 
     def set_statusbar(self, message):
