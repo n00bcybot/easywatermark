@@ -12,7 +12,6 @@ class Controller(QWidget, QObject):
         super().__init__()
 
         self.current_path = ""
-        # self.current_text = ""
         self.list_widget_item = QListWidgetItem
 
         self.main_window = main_window  # Import MainWindow
@@ -22,7 +21,10 @@ class Controller(QWidget, QObject):
         self.flicker = self.main_window.image_flicker
         self.rename = self.main_window.toolbox.rename_widget
         self.resize = self.main_window.toolbox.resize_widget
+        self.watermark = self.main_window.toolbox.watermark
         self.process = self.main_window.process
+
+
 
         self.main_window.action_add.triggered.connect(self.add_images)
         self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
@@ -39,9 +41,10 @@ class Controller(QWidget, QObject):
 
         self.converter.sg_indexChanged.connect(self.extension_changed)
 
+        self.watermark.sg_sendFilePath.connect(self.receive_watermark_path)
+
         self.process.pb_select_folder.clicked.connect(self.process_select_folder)
         self.process.pb_process.clicked.connect(self.process_batch)
-
 
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -119,6 +122,9 @@ class Controller(QWidget, QObject):
         self.main_window.set_statusbar(self.current_path)
         self.image_display.display_image(self.current_path)
 
+    def receive_watermark_path(self, path):
+        self.image_display.lb_display.watermark = QPixmap(path)
+        self.image_display.lb_display.update()
     # ------------------------------------------------------------------------------------------------------------------
     # Rename
     # ------------------------------------------------------------------------------------------------------------------
@@ -141,6 +147,7 @@ class Controller(QWidget, QObject):
             self.process.lw_image_list.addItem(image)
         # Use exec() instead of show() to block the main window until the dialog is closed
         self.process.exec()
+
     def process_batch(self):
         if model["output_folder"] == "":
             QMessageBox.information(self, "Output Folder Not Selected", "Please select an output folder!")
@@ -161,12 +168,15 @@ class Controller(QWidget, QObject):
                         width = int(self.resize.le_width.text())
                         height = int(self.resize.le_height.text())
                         if self.resize.chb_keep_ratio.isChecked():
-                            new_width, new_height = static.keep_ratio(image.width, image.height, int(self.resize.le_width.text()), int(self.resize.le_height.text()))
+                            new_width, new_height = static.keep_ratio(image.width, image.height,
+                                                                      int(self.resize.le_width.text()),
+                                                                      int(self.resize.le_height.text()))
                             image_resized = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
                         else:
                             image_resized = image.resize((width, height), Image.Resampling.LANCZOS)
                     elif self.resize.rb_percent.isChecked():
-                        new_width, new_height = static.reduce_by_percent(int(self.resize.le_percent.text()), image.width, image.height)
+                        new_width, new_height = static.reduce_by_percent(int(self.resize.le_percent.text()),
+                                                                         image.width, image.height)
                         image_resized = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
 
                     elif self.resize.rb_predefined.isChecked():

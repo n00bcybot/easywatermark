@@ -7,6 +7,7 @@ from ToolBox.UI.toolbox_ui import Ui_wg_toolbox
 from Resize.resize import ResizeWidget
 from Converter.converter import ConverterWidget
 from Rename.rename import RenameWidget
+from Watermark.watermark import Watermark
 
 
 class ToolBoxWidget(QWidget, Ui_wg_toolbox, ):
@@ -17,6 +18,18 @@ class ToolBoxWidget(QWidget, Ui_wg_toolbox, ):
         self.page_2.setHidden(True)
         self.page_3.setHidden(True)
         self.page_4.setHidden(True)
+
+        # Import Watermark widget
+        # --------------------------------------------------------------------------------------------------
+        self.watermark = Watermark()
+        self.page_1.layout().addWidget(self.watermark)
+
+        self.watermark.fr_container.setDisabled(True)
+        self.watermark.fr_browse.setDisabled(True)
+        self.watermark.fr_combo.setDisabled(True)
+        self.watermark.lb_enter_text.setDisabled(True)
+        self.watermark.le_text.setDisabled(True)
+
 
         # Import Resize widget
         # --------------------------------------------------------------------------------------------------
