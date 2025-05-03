@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QLabel, QFileDialog
-from PySide6.QtGui import QPainter, QPixmap, QTransform
+from PySide6.QtGui import QPainter, QPixmap, QTransform, QColor
 from PySide6.QtCore import QPoint, QRect, Qt, QSize
 from math import atan2, degrees
 
@@ -8,6 +8,9 @@ class WatermarkLabel(QLabel):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+
         self.watermark = None
         self.watermark_pos = QPoint(50, 50)  # Starting position
         self.dragging = False
@@ -21,18 +24,18 @@ class WatermarkLabel(QLabel):
         self.original_mouse_pos = None
         self.original_scale = 1.0
 
-    def setWatermark(self, pixmap):
-        self.watermark = pixmap
-        self.update()
+    # def setWatermark(self, pixmap):
+    #     self.watermark = pixmap
+    #     self.update()
 
-    def setTransform(self, pos=None, scale=None, rotation=None):
-        if pos:
-            self.watermark_pos = pos
-        if scale is not None:
-            self.scale = scale
-        if rotation is not None:
-            self.rotation = rotation
-        self.update()
+    # def setTransform(self, pos=None, scale=None, rotation=None):
+    #     if pos:
+    #         self.watermark_pos = pos
+    #     if scale is not None:
+    #         self.scale = scale
+    #     if rotation is not None:
+    #         self.rotation = rotation
+    #     self.update()
 
     def paintEvent(self, event):
         super().paintEvent(event)
@@ -64,18 +67,18 @@ class WatermarkLabel(QLabel):
             resize_handle_rect = QRect(bottom_right.x() - handle_size,
                                        bottom_right.y() - handle_size,
                                        handle_size, handle_size)
-            painter.fillRect(resize_handle_rect, Qt.white)
+            painter.fillRect(resize_handle_rect, QColor("white"))
 
             # Draw rotation handle (above top-center)
             top_center = QPoint(top_left.x() + scaled_width // 2, top_left.y())
             rotate_handle_center = QPoint(top_center.x(), top_center.y() - 30)
-            painter.setBrush(Qt.white)
+            painter.setBrush(QColor("white"))
             painter.drawEllipse(rotate_handle_center, 6, 6)
 
             painter.end()
 
     def mousePressEvent(self, event):
-        if not self.watermark or event.button() != Qt.LeftButton:
+        if not self.watermark or event.button() != Qt.MouseButton.LeftButton:
             return
 
         # Calculate scaled watermark area
@@ -115,7 +118,7 @@ class WatermarkLabel(QLabel):
     def mouseMoveEvent(self, event):
         if self.interaction_mode == "resize":
             delta = event.pos() - self.original_mouse_pos
-            new_scale = max(0.1, self.original_scale + delta.x() / 100.0)
+            new_scale = max(0.1, self.original_scale + delta.x() / 100)
             self.scale = new_scale
             self.update()
 
@@ -134,7 +137,7 @@ class WatermarkLabel(QLabel):
             self.update()
 
     def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.dragging = False
             self.interaction_mode = None
 

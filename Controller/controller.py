@@ -24,8 +24,6 @@ class Controller(QWidget, QObject):
         self.watermark = self.main_window.toolbox.watermark
         self.process = self.main_window.process
 
-
-
         self.main_window.action_add.triggered.connect(self.add_images)
         self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
         self.main_window.action_remove.triggered.connect(self.rebuild_viewer)
@@ -45,7 +43,6 @@ class Controller(QWidget, QObject):
 
         self.process.pb_select_folder.clicked.connect(self.process_select_folder)
         self.process.pb_process.clicked.connect(self.process_batch)
-
 
     # ------------------------------------------------------------------------------------------------------------------
     # Adding, removing, displaying images
@@ -122,9 +119,14 @@ class Controller(QWidget, QObject):
         self.main_window.set_statusbar(self.current_path)
         self.image_display.display_image(self.current_path)
 
+    # ------------------------------------------------------------------------------------------------------------------
+    # Watermark
+    # ------------------------------------------------------------------------------------------------------------------
+
     def receive_watermark_path(self, path):
         self.image_display.lb_display.watermark = QPixmap(path)
         self.image_display.lb_display.update()
+
     # ------------------------------------------------------------------------------------------------------------------
     # Rename
     # ------------------------------------------------------------------------------------------------------------------
