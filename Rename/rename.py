@@ -46,8 +46,8 @@ class RenameWidget(QWidget, Ui_Rename):
         selected_format = self.extension
         data["extension"] = static.image_format(selected_format)
 
-    def get_current_text(self):
-        return static.get_digit(self.comb_digit.currentText())
+    def get_current_text(self, text):
+        static.get_digit(text)
 
     def set_preview(self):
         try:
