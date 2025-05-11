@@ -28,7 +28,7 @@ class RenameWidget(QWidget, Ui_Rename):
         self.le_remove_last.textChanged.connect(self.set_dynamic_preview)
 
         self.comb_digit.textActivated.connect(self.set_dynamic_preview)
-        self.comb_digit.textActivated.connect(static.get_digit(self.comb_digit.currentText))
+        self.comb_digit.textActivated.connect(self.get_current_text)
         self.comb_delimiter.textActivated.connect(self.set_dynamic_preview)
         self.comb_delimiter.textActivated.connect(static.set_delimiter)
 
@@ -46,11 +46,17 @@ class RenameWidget(QWidget, Ui_Rename):
         selected_format = self.extension
         data["extension"] = static.image_format(selected_format)
 
+    def get_current_text(self):
+        return static.get_digit(self.comb_digit.currentText())
+
     def set_preview(self):
-        static.set_image_data(model["image_paths"][0])
-        result = ("/" + data["prefix"] + data["replace_name"] + data["base_name"] + data["suffix"] +
-                  data["counter"] + data["extension"])
-        self.lb_preview.setText(result)
+        try:
+            static.set_image_data(model["image_paths"][0])
+            result = ("/" + data["prefix"] + data["replace_name"] + data["base_name"] + data["suffix"] +
+                      data["counter"] + data["extension"])
+            self.lb_preview.setText(result)
+        except IndexError:
+            print("No images loaded")
 
     def set_dynamic_preview(self):
         self.set_rename_data(index=1)
@@ -95,11 +101,6 @@ class RenameWidget(QWidget, Ui_Rename):
         self.extension = text
         # Prints empty list (?)
         self.set_dynamic_preview()
-
-
-
-
-
 
 #
 # if __name__ == "__main__":
