@@ -6,7 +6,7 @@ from model.model import *
 from functions import static
 
 
-class Controller(QWidget, QObject):
+class Controller(QWidget, QObject, QPoint):
 
     def __init__(self, main_window):
         super().__init__()
@@ -22,8 +22,11 @@ class Controller(QWidget, QObject):
         self.rename = self.main_window.toolbox.rename_widget
         self.resize = self.main_window.toolbox.resize_widget
         self.watermark = self.main_window.toolbox.watermark
+        self.current_watermark = None
         self.process = self.main_window.process
+
         self.watermark_label = self.main_window.watermark_label
+        self.watermark_rect = self.watermark_label.watermark_rect
 
         self.main_window.action_add.triggered.connect(self.add_images)
         self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
@@ -37,11 +40,8 @@ class Controller(QWidget, QObject):
         self.flicker.sg_display_previous.connect(self.show_previous_image)
 
         self.rename.receive_extension(self.converter.cb_convert.currentText())
-
         self.converter.sg_indexChanged.connect(self.extension_changed)
-
         self.watermark.sg_sendFilePath.connect(self.receive_watermark_path)
-
         self.process.pb_select_folder.clicked.connect(self.process_select_folder)
         self.process.pb_process.clicked.connect(self.process_batch)
 
@@ -126,6 +126,7 @@ class Controller(QWidget, QObject):
 
     def receive_watermark_path(self, path):
         self.image_display.lb_display.watermark = QPixmap(path)
+        self.current_watermark = path
         self.image_display.lb_display.update()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -165,7 +166,7 @@ class Controller(QWidget, QObject):
                 # Create image object
                 image = Image.open(image_path)
                 image_resized = None
-                
+
 
                 if self.resize.chb_resize.isChecked():
                     if self.resize.rb_custom.isChecked():
@@ -195,46 +196,43 @@ class Controller(QWidget, QObject):
                     if self.rename.chb_add_count.isChecked():
                         image.save(model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
                     else:
-                        original_image_width = image.width
-                        original_image_height = image.height
+                        original_image_width = round(image.width)
+                        original_image_height = round(image.height)
 
-                        displayed_image_width = self.watermark_label.current_width
-                        displayed_image_height = self.watermark_label.current_height
+                        print(original_image_width, original_image_height)
+
+                        if self.image_display.initial_image_size is not None:
+                            displayed_image_width = self.image_display.initial_image_size.width()
+                            displayed_image_height = self.image_display.initial_image_size.height()
+                        else:
+                            displayed_image_width = self.image_display.current_image_size.width()
+                            displayed_image_height = self.image_display.current_image_size.height()
 
                         displayed_watermark_width = self.watermark.width()
                         displayed_watermark_height = self.watermark.height()
 
-                        original_watermark_width = 600
-                        original_watermark_height = 400
-
-                        watermark_display_posX = self.watermark_label.watermark_pos.x()
-                        watermark_display_posY = self.watermark_label.watermark_pos.y()
+                        watermark_display_posX = self.watermark_rect.x()
+                        watermark_display_posY = self.watermark_rect.y()
 
                         # Get the ratios from the displayed image and watermark
-                        watermark_original_posY = original_image_height * (
-                                    watermark_display_posY / displayed_image_height)
-                        watermark_original_posX = original_image_width * (
-                                    watermark_display_posX / displayed_image_width)
+                        point = QPoint(process["watermark_pos"][0], process["watermark_pos"][1])
+                        watermark_original_posY = original_image_height * (point.y() / displayed_image_height)
+                        watermark_original_posX = original_image_width * (point.x() / displayed_image_width)
 
-                        watermark_final_width = (
-                                                            displayed_watermark_width / displayed_image_width) * original_image_width
-                        watermark_final_height = (
-                                                             displayed_watermark_height / displayed_image_height) * original_image_height
+                        print(watermark_original_posX, watermark_original_posY)
 
-                        x = image_size[0] * ratio_x
-                        y = image_size[1] * ratio_y
+                        watermark_final_width = round((displayed_watermark_width / displayed_image_width) * original_image_width)
+                        watermark_final_height = round((displayed_watermark_height / displayed_image_height) * original_image_height)
 
-                        # Create transparent watermark canvas with same size as image
-                        wm_canvas = Image.new("RGBA", image.size, (0, 0, 0, 0))
-                        wm_canvas.paste(watermark_image, (int(x), int(y)), watermark_image)
+                        resized_watermark = Image.open(self.current_watermark)
+                        resized_watermark.resize((watermark_final_width, watermark_final_height), Image.Resampling.LANCZOS)
+                        converted_watermark = resized_watermark.convert("RGBA")
+                        resized_watermark.close()
 
-                        # Composite final image
-                        final = Image.alpha_composite(image.convert("RGBA"), wm_canvas)
-
-                        # Save
-                        final.save(...)
-
-                        image.save(model["output_folder"] + data["base_name"] + data["extension"])
+                        base = Image.new("RGBA", (original_image_width, original_image_height), (255, 255, 255, 0))  # white background
+                        base.paste(image.convert("RGBA"))  # Ensure base is RGBA
+                        base.paste(converted_watermark, (round(watermark_original_posX), round(watermark_original_posY)), mask=converted_watermark)
+                        base.save(model["output_folder"] + data["base_name"] + data["extension"])
 
                 index += 1
 

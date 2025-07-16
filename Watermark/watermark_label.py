@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QLabel, QFileDialog
 from PySide6.QtGui import QPainter, QPixmap, QTransform, QColor
-from PySide6.QtCore import QPoint, QRect, Qt, QSize
+from PySide6.QtCore import QPoint, QRect, Qt, QSize, Signal
 from math import atan2, degrees
+from model.model import *
 
 
 class WatermarkLabel(QLabel):
@@ -26,6 +27,8 @@ class WatermarkLabel(QLabel):
 
         self.current_width = None
         self.current_height = None
+
+        self.watermark_rect = QRect(0, 0, 0, 0)
 
     # def setWatermark(self, pixmap):
     #     self.watermark = pixmap
@@ -96,16 +99,19 @@ class WatermarkLabel(QLabel):
             image_rect = get_displayed_image_rect(self, self.pixmap())  # self = WatermarkLabel
 
             # Get watermark relative rectangle
-            watermark_rect = QRect(
+            self.watermark_rect = QRect(
                 self.watermark_pos.x() - image_rect.left(),
                 self.watermark_pos.y() - image_rect.top(),
                 self.watermark.width() * self.scale,
                 self.watermark.height() * self.scale
             )
 
-            print(f"Watermark top left corner coordinates X {watermark_rect.x()}")
-            print(f"Watermark top left corner coordinates Y {watermark_rect.y()}")
+            # print(f"Watermark position X {self.watermark_pos.x()}")
+            # print(f"Watermark position Y {self.watermark_pos.y()}")
 
+            process["watermark_pos"] = (self.watermark_pos.x(), self.watermark_pos.y())
+
+            print(process["watermark_pos"])
 
     def mousePressEvent(self, event):
         if not self.watermark or event.button() != Qt.MouseButton.LeftButton:

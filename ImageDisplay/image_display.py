@@ -31,6 +31,7 @@ class ImageDisplay(QWidget, Ui_layout_image_display):
         self.initial_image_size = QSize()
         self.current_image_size = QSize()
 
+
     def display_image(self, path):
         model["current_image_paths"] = path
         self.current_path = path
