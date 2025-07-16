@@ -165,6 +165,7 @@ class Controller(QWidget, QObject):
                 # Create image object
                 image = Image.open(image_path)
                 image_resized = None
+                
 
                 if self.resize.chb_resize.isChecked():
                     if self.resize.rb_custom.isChecked():
@@ -194,9 +195,56 @@ class Controller(QWidget, QObject):
                     if self.rename.chb_add_count.isChecked():
                         image.save(model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
                     else:
+                        original_image_width = image.width
+                        original_image_height = image.height
+
+                        displayed_image_width = self.watermark_label.current_width
+                        displayed_image_height = self.watermark_label.current_height
+
+                        displayed_watermark_width = self.watermark.width()
+                        displayed_watermark_height = self.watermark.height()
+
+                        original_watermark_width = 600
+                        original_watermark_height = 400
+
+                        watermark_display_posX = self.watermark_label.watermark_pos.x()
+                        watermark_display_posY = self.watermark_label.watermark_pos.y()
+
+                        # Get the ratios from the displayed image and watermark
+                        watermark_original_posY = original_image_height * (
+                                    watermark_display_posY / displayed_image_height)
+                        watermark_original_posX = original_image_width * (
+                                    watermark_display_posX / displayed_image_width)
+
+                        watermark_final_width = (
+                                                            displayed_watermark_width / displayed_image_width) * original_image_width
+                        watermark_final_height = (
+                                                             displayed_watermark_height / displayed_image_height) * original_image_height
+
+                        x = image_size[0] * ratio_x
+                        y = image_size[1] * ratio_y
+
+                        # Create transparent watermark canvas with same size as image
+                        wm_canvas = Image.new("RGBA", image.size, (0, 0, 0, 0))
+                        wm_canvas.paste(watermark_image, (int(x), int(y)), watermark_image)
+
+                        # Composite final image
+                        final = Image.alpha_composite(image.convert("RGBA"), wm_canvas)
+
+                        # Save
+                        final.save(...)
+
                         image.save(model["output_folder"] + data["base_name"] + data["extension"])
 
                 index += 1
+
+    def blend_image_original(self, image):
+
+        pass
+
+
+    def blend_image_resized(self):
+        pass
 
     def process_select_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")
