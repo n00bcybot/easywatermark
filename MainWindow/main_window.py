@@ -14,6 +14,7 @@ from ImageDisplay.image_display import ImageDisplay
 from Flicker.flicker import FlickerWidget
 from Process.process import ProcessDialog
 from Watermark.watermark import Watermark
+from Watermark.watermark_label import WatermarkLabel
 
 from MainWindow.UI.main_window_ui import Ui_MainWindow
 
@@ -59,6 +60,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Import Watermark widget
         # --------------------------------------------------------------------------------------------------
         self.watermark = Watermark()
+        # --------------------------------------------------------------------------------------------------
+
+        # Import Watermark Label
+        # --------------------------------------------------------------------------------------------------
+        self.watermark_label = WatermarkLabel()
         # --------------------------------------------------------------------------------------------------
 
     def set_statusbar(self, message):

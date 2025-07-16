@@ -26,6 +26,11 @@ class ImageDisplay(QWidget, Ui_layout_image_display):
         self.image_paths = model["image_paths"]
         self.current_path = ""
 
+        # Get the initial and the current size of the image displayed inside the image display label. This can be
+        # used to constrain the watermark to the boundaries of the image and not the label
+        self.initial_image_size = QSize()
+        self.current_image_size = QSize()
+
     def display_image(self, path):
         model["current_image_paths"] = path
         self.current_path = path
@@ -33,6 +38,8 @@ class ImageDisplay(QWidget, Ui_layout_image_display):
         model["current_pixmap"] = pixmap
         scaled_pixmap = static.scale_from_pixmap(self.lb_display.size(), pixmap)
         self.lb_display.setPixmap(scaled_pixmap)
+        self.initial_image_size = scaled_pixmap.size()
+        print(f"Initial image size: {self.initial_image_size}")
 
     def resizeEvent(self, event):
         for path in model["image_paths"]:
@@ -40,5 +47,8 @@ class ImageDisplay(QWidget, Ui_layout_image_display):
                 # Display the first image in the list upon adding the images
                 scaled_pixmap = static.scale_from_pixmap(self.lb_display.size(), model["current_pixmap"])
                 self.lb_display.setPixmap(scaled_pixmap)
+                self.current_image_size = scaled_pixmap.size()
+                print(f"Current image size: {self.current_image_size}")
+
 
         super().resizeEvent(event)

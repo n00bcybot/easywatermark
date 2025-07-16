@@ -23,6 +23,7 @@ class Controller(QWidget, QObject):
         self.resize = self.main_window.toolbox.resize_widget
         self.watermark = self.main_window.toolbox.watermark
         self.process = self.main_window.process
+        self.watermark_label = self.main_window.watermark_label
 
         self.main_window.action_add.triggered.connect(self.add_images)
         self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
@@ -152,7 +153,7 @@ class Controller(QWidget, QObject):
 
     def process_batch(self):
         if model["output_folder"] == "":
-            QMessageBox.information(self, "Output Folder Not Selected", "Please select an output folder!")
+            QMessageBox.information(self, "Output folder fot selected", "Please select an output folder!")
         else:
             index = 1
             for image_path in model["image_paths"]:
@@ -186,8 +187,7 @@ class Controller(QWidget, QObject):
                         image_resized = image.resize((width, height), Image.Resampling.LANCZOS)
 
                     if self.rename.chb_add_count.isChecked():
-                        image_resized.save(
-                            model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
+                        image_resized.save(model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
                     else:
                         image_resized.save(model["output_folder"] + data["base_name"] + data["extension"])
                 else:
