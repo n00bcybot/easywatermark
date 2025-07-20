@@ -85,3 +85,4 @@ canvas.save("C:\\Users\\fresh\\Desktop\\repos\\EasyWaterMark\\images\\resized\\r
 # print(desired_image_width)
 # print(watermark_new_positionX, watermark_new_positionY)
 # print(watermark_new_width, watermark_new_height)
+
