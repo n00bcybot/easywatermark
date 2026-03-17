@@ -9,7 +9,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # Use stylesheet
-    # app.setStyleSheet(open("stylesheet.qss").read())
+    app.setStyleSheet(open("stylesheet.qss").read())
 
     window = MainWindow()
     controller = Controller(window)

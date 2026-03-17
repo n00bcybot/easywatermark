@@ -91,6 +91,10 @@ def predefined_size(selection):
             width = 1920
             height = 1080
             return width, height
+        case "2048 x 1152 (QWXGA)":
+            width = 2048
+            height = 1152
+            return width, height
         case "800 x 600":
             width = 800
             height = 600

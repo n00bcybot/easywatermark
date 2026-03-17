@@ -87,8 +87,11 @@ class WatermarkLabel(QLabel):
             # Get the current watermark size
             self.current_width = scaled_width
             self.current_height = scaled_height
-            print(f"Current watermark width {self.current_width}")
-            print(f"Current watermark width {self.current_height}")
+            process["watermark_current_width"] = round(scaled_width)
+            process["watermark_current_height"] = round(scaled_height)
+
+            print(f"Current watermark width {process["watermark_current_width"]}")
+            print(f"Current watermark width {process["watermark_current_height"]}")
 
             def get_displayed_image_rect(label: QLabel, pixmap: QPixmap) -> QRect:
                 scaled_pixmap = pixmap.scaled(label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
@@ -111,7 +114,7 @@ class WatermarkLabel(QLabel):
 
             process["watermark_pos"] = (self.watermark_pos.x(), self.watermark_pos.y())
 
-            print(process["watermark_pos"])
+            # print(process["watermark_pos"])
 
     def mousePressEvent(self, event):
         if not self.watermark or event.button() != Qt.MouseButton.LeftButton:

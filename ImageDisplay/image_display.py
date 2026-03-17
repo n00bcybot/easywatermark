@@ -31,7 +31,6 @@ class ImageDisplay(QWidget, Ui_layout_image_display):
         self.initial_image_size = QSize()
         self.current_image_size = QSize()
 
-
     def display_image(self, path):
         model["current_image_paths"] = path
         self.current_path = path
@@ -40,7 +39,8 @@ class ImageDisplay(QWidget, Ui_layout_image_display):
         scaled_pixmap = static.scale_from_pixmap(self.lb_display.size(), pixmap)
         self.lb_display.setPixmap(scaled_pixmap)
         self.initial_image_size = scaled_pixmap.size()
-        print(f"Initial image size: {self.initial_image_size}")
+        process["current_image_width"] = self.initial_image_size.width()
+        process["current_image_height"] = self.initial_image_size.height()
 
     def resizeEvent(self, event):
         for path in model["image_paths"]:
@@ -50,6 +50,7 @@ class ImageDisplay(QWidget, Ui_layout_image_display):
                 self.lb_display.setPixmap(scaled_pixmap)
                 self.current_image_size = scaled_pixmap.size()
                 print(f"Current image size: {self.current_image_size}")
-
+                process["current_image_width"] = self.current_image_size.width()
+                process["current_image_height"] = self.current_image_size.height()
 
         super().resizeEvent(event)
