@@ -2,11 +2,13 @@ from PySide6.QtWidgets import QFileDialog, QMessageBox, QWidget
 from PySide6.QtCore import QObject, Slot, Signal, QSize
 from PySide6.QtGui import Qt
 from PIL import Image
+
+import model.model
 from model.model import *
 from functions import static
 
 
-class Controller(QWidget, QObject, QPoint):
+class Controller(QWidget, QObject):
 
     def __init__(self, main_window):
         super().__init__()
@@ -22,11 +24,8 @@ class Controller(QWidget, QObject, QPoint):
         self.rename = self.main_window.toolbox.rename_widget
         self.resize = self.main_window.toolbox.resize_widget
         self.watermark = self.main_window.toolbox.watermark
-        self.current_watermark = None
         self.process = self.main_window.process
-
         self.watermark_label = self.main_window.watermark_label
-        self.watermark_rect = self.watermark_label.watermark_rect
 
         self.main_window.action_add.triggered.connect(self.add_images)
         self.main_window.action_clear.triggered.connect(self.image_viewer.clear_list_viewer)
@@ -40,8 +39,11 @@ class Controller(QWidget, QObject, QPoint):
         self.flicker.sg_display_previous.connect(self.show_previous_image)
 
         self.rename.receive_extension(self.converter.cb_convert.currentText())
+
         self.converter.sg_indexChanged.connect(self.extension_changed)
+
         self.watermark.sg_sendFilePath.connect(self.receive_watermark_path)
+
         self.process.pb_select_folder.clicked.connect(self.process_select_folder)
         self.process.pb_process.clicked.connect(self.process_batch)
 
@@ -125,8 +127,8 @@ class Controller(QWidget, QObject, QPoint):
     # ------------------------------------------------------------------------------------------------------------------
 
     def receive_watermark_path(self, path):
+        process["watermark_path"] = path
         self.image_display.lb_display.watermark = QPixmap(path)
-        self.current_watermark = path
         self.image_display.lb_display.update()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -153,6 +155,7 @@ class Controller(QWidget, QObject, QPoint):
         self.process.exec()
 
     def process_batch(self):
+
         if model["output_folder"] == "":
             QMessageBox.information(self, "Output folder fot selected", "Please select an output folder!")
         else:
@@ -163,86 +166,87 @@ class Controller(QWidget, QObject, QPoint):
                 self.rename.set_rename_data(index)
                 # self.sg_sendIndex.emit(index)
 
-                # Create image object
-                image = Image.open(image_path)
-                image_resized = None
+                # Create image objects
+                working_image = Image.open(image_path)
+                watermark = Image.open(process["watermark_path"])
 
+                original_image_width = working_image.width
+                original_image_height = working_image.height
+
+                # -----------------------------------
+                # Dimensions of the image as seen in the image display (image_display.py)
+                preview_image_width = process["current_image_width"]
+
+                # Dimensions of the watermark as seen in the watermark custom label (watermark_label)
+                preview_watermark_width = process["watermark_current_width"]
+                preview_watermark_height = process["watermark_current_height"]
+
+                # Watermark's position in watermark_label
+                preview_watermark_posX = process["watermark_pos"][0]
+                preview_watermark_posY = process["watermark_pos"][1]
+
+                desired_image_width = original_image_width if not self.resize.le_width.text() else int(self.resize.le_width.text())
+                desired_image_height = original_image_height if not self.resize.le_height.text() else int(self.resize.le_height.text())
+
+                ratio = desired_image_width / preview_image_width
+
+                watermark_new_width = round(ratio * preview_watermark_width)
+                watermark_new_height = round(ratio * preview_watermark_height)
+
+                watermark_new_positionX = round(ratio * preview_watermark_posX)
+                watermark_new_positionY = round(ratio * preview_watermark_posY)
+
+                working_image.thumbnail((desired_image_width, desired_image_height), Image.Resampling.NEAREST)
+                watermark.thumbnail((watermark_new_width, watermark_new_height))
 
                 if self.resize.chb_resize.isChecked():
                     if self.resize.rb_custom.isChecked():
-                        width = int(self.resize.le_width.text())
-                        height = int(self.resize.le_height.text())
+
                         if self.resize.chb_keep_ratio.isChecked():
-                            new_width, new_height = static.keep_ratio(image.width, image.height,
+                            desired_image_width, desired_image_height = static.keep_ratio(working_image.width, working_image.height,
                                                                       int(self.resize.le_width.text()),
                                                                       int(self.resize.le_height.text()))
-                            image_resized = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+                            working_image.resize((desired_image_width, desired_image_height), Image.Resampling.LANCZOS)
                         else:
-                            image_resized = image.resize((width, height), Image.Resampling.LANCZOS)
+                            working_image.resize((desired_image_width, desired_image_height), Image.Resampling.LANCZOS)
                     elif self.resize.rb_percent.isChecked():
-                        new_width, new_height = static.reduce_by_percent(int(self.resize.le_percent.text()),
-                                                                         image.width, image.height)
-                        image_resized = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+                        desired_image_width, desired_image_height = static.reduce_by_percent(int(self.resize.le_percent.text()),
+                                                                         working_image.width, working_image.height)
+                        working_image.resize((desired_image_width, desired_image_height), Image.Resampling.LANCZOS)
 
                     elif self.resize.rb_predefined.isChecked():
-                        width, height = static.predefined_size(self.resize.comb_presize.currentText())
-                        image_resized = image.resize((width, height), Image.Resampling.LANCZOS)
+                        desired_image_width, desired_image_width = static.predefined_size(self.resize.comb_presize.currentText())
+                        working_image.resize((desired_image_width, desired_image_width), Image.Resampling.LANCZOS)
 
                     if self.rename.chb_add_count.isChecked():
-                        image_resized.save(model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
+                        path = model["output_folder"] + data["new_name"] + data["counter"] + data["extension"]
+                        self.canvas_save(working_image, desired_image_width, desired_image_height, watermark,
+                                         watermark_new_positionX, watermark_new_positionY, path)
                     else:
-                        image_resized.save(model["output_folder"] + data["base_name"] + data["extension"])
+                        path = model["output_folder"] + data["base_name"] + data["extension"]
+                        self.canvas_save(working_image, desired_image_width, desired_image_height, watermark,
+                                         watermark_new_positionX, watermark_new_positionY, path)
                 else:
                     if self.rename.chb_add_count.isChecked():
-                        image.save(model["output_folder"] + data["new_name"] + data["counter"] + data["extension"])
+                        path = model["output_folder"] + data["new_name"] + data["counter"] + data["extension"]
+                        self.canvas_save(working_image, desired_image_width, desired_image_height, watermark,
+                                         watermark_new_positionX, watermark_new_positionY, path)
                     else:
-                        original_image_width = round(image.width)
-                        original_image_height = round(image.height)
-
-                        print(original_image_width, original_image_height)
-
-                        if self.image_display.initial_image_size is not None:
-                            displayed_image_width = self.image_display.initial_image_size.width()
-                            displayed_image_height = self.image_display.initial_image_size.height()
-                        else:
-                            displayed_image_width = self.image_display.current_image_size.width()
-                            displayed_image_height = self.image_display.current_image_size.height()
-
-                        displayed_watermark_width = self.watermark.width()
-                        displayed_watermark_height = self.watermark.height()
-
-                        watermark_display_posX = self.watermark_rect.x()
-                        watermark_display_posY = self.watermark_rect.y()
-
-                        # Get the ratios from the displayed image and watermark
-                        point = QPoint(process["watermark_pos"][0], process["watermark_pos"][1])
-                        watermark_original_posY = original_image_height * (point.y() / displayed_image_height)
-                        watermark_original_posX = original_image_width * (point.x() / displayed_image_width)
-
-                        print(watermark_original_posX, watermark_original_posY)
-
-                        watermark_final_width = round((displayed_watermark_width / displayed_image_width) * original_image_width)
-                        watermark_final_height = round((displayed_watermark_height / displayed_image_height) * original_image_height)
-
-                        resized_watermark = Image.open(self.current_watermark)
-                        resized_watermark.resize((watermark_final_width, watermark_final_height), Image.Resampling.LANCZOS)
-                        converted_watermark = resized_watermark.convert("RGBA")
-                        resized_watermark.close()
-
-                        base = Image.new("RGBA", (original_image_width, original_image_height), (255, 255, 255, 0))  # white background
-                        base.paste(image.convert("RGBA"))  # Ensure base is RGBA
-                        base.paste(converted_watermark, (round(watermark_original_posX), round(watermark_original_posY)), mask=converted_watermark)
-                        base.save(model["output_folder"] + data["base_name"] + data["extension"])
+                        path = model["output_folder"] + data["base_name"] + data["extension"]
+                        self.canvas_save(working_image, desired_image_width, desired_image_height, watermark,
+                                         watermark_new_positionX, watermark_new_positionY, path)
 
                 index += 1
 
-    def blend_image_original(self, image):
+    def canvas_save(self, image, width, height, watermark, positionX, positionY, path):
+        canvas = Image.new("RGBA", (width, height), (255, 255, 255, 0))
+        canvas.paste(
+            image.convert("RGBA"))  # Convert to RGBA for compositing and paste into the canvas
 
-        pass
-
-
-    def blend_image_resized(self):
-        pass
+        # Paste resized watermark and set position
+        canvas.paste(watermark, (round(positionX), round(positionY)),
+                     mask=watermark)
+        canvas.save(path)
 
     def process_select_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")

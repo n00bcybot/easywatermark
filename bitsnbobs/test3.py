@@ -3,6 +3,10 @@ import sys
 
 # Testing results with rendering preview and final result
 
+# Load files
+file = "C:\\Users\\fresh\\Desktop\\repos\\EasyWaterMark\\images\\_MG_4068.jpg"
+watermark_file = "C:\\Users\\fresh\\Desktop\\repos\\EasyWaterMark\\images\\logo.png"
+
 original_image_width = 4751
 original_image_height = 3161
 
@@ -42,10 +46,6 @@ watermark_new_height = round(ratio * preview_watermark_height)
 watermark_new_positionX = round(ratio * preview_watermark_posX)
 watermark_new_positionY = round(ratio * preview_watermark_posY)
 
-# Load files
-file = "C:\\Users\\fresh\\Desktop\\repos\\EasyWaterMark\\images\\_MG_4068.jpg"
-watermark_file = "C:\\Users\\fresh\\Desktop\\repos\\EasyWaterMark\\images\\logo.png"
-
 # Create preview
 # ----------------------------------------------------------------------------------------------------------------------
 preview_image = Image.open(file)
@@ -60,6 +60,7 @@ preview_canvas.save("C:\\Users\\fresh\\Desktop\\repos\\EasyWaterMark\\images\\re
 
 # End preview
 # ----------------------------------------------------------------------------------------------------------------------
+
 # Open the image and the watermark and resize to desired dimensions
 working_image = Image.open(file)
 working_image.thumbnail((desired_image_width, desired_image_height), Image.Resampling.NEAREST)

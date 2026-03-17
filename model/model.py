@@ -13,7 +13,12 @@ model = {
 }
 
 process = {
+    "watermark_path": "",
     "watermark_pos": QPoint,
+    "watermark_current_width": int,
+    "watermark_current_height": int,
+    "current_image_width": QSize.width,
+    "current_image_height": QSize.height,
 
     "resize": {
         "custom_size": {
